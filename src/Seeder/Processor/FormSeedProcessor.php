@@ -33,15 +33,15 @@ final class FormSeedProcessor
     {
         $errors = $this->validator->validate($source->data);
 
-        if ($errors !== []) {
+        if ([] !== $errors) {
             return ProcessorResult::error($source->tag, $source->sourceName, $errors);
         }
 
         /** @var array<string, mixed> $formData */
         $formData = $source->data['form'];
 
-        $form    = $this->formRepository->findOneByTag($source->tag);
-        $created = $form === null;
+        $form = $this->formRepository->findOneByTag($source->tag);
+        $created = null === $form;
 
         if (!$created && !$force && $form->seedChecksum === $source->checksum) {
             return ProcessorResult::skipped($source->tag, $source->sourceName);
@@ -70,14 +70,14 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function createForm(array $data): Form
     {
-        $form             = new Form();
-        $form->name       = (string) $data['name'];
-        $form->enabled    = (bool) ($data['enabled'] ?? true);
+        $form = new Form();
+        $form->name = (string) $data['name'];
+        $form->enabled = (bool) ($data['enabled'] ?? true);
         $form->defaultLang = (string) ($data['default_lang'] ?? 'es');
-        $form->parameters  = (array) ($data['parameters'] ?? []);
+        $form->parameters = (array) ($data['parameters'] ?? []);
         $form->setTag((string) $data['tag']);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $form->translations = $data['translations'];
         }
 
@@ -89,12 +89,12 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function updateForm(Form $form, array $data): void
     {
-        $form->name       = (string) $data['name'];
-        $form->enabled    = (bool) ($data['enabled'] ?? true);
+        $form->name = (string) $data['name'];
+        $form->enabled = (bool) ($data['enabled'] ?? true);
         $form->defaultLang = (string) ($data['default_lang'] ?? 'es');
-        $form->parameters  = (array) ($data['parameters'] ?? []);
+        $form->parameters = (array) ($data['parameters'] ?? []);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $form->translations = $data['translations'];
         }
     }
@@ -108,10 +108,10 @@ final class FormSeedProcessor
 
         foreach ($sectionsData as $sectionData) {
             /** @var array<string, mixed> $sectionData */
-            $tag     = (string) $sectionData['tag'];
+            $tag = (string) $sectionData['tag'];
             $section = $this->sectionRepository->findOneBy(['form' => $form, 'tag' => $tag]);
 
-            if ($section === null) {
+            if (null === $section) {
                 $section = $this->createSection($sectionData, $form);
             } else {
                 $this->updateSection($section, $sectionData);
@@ -128,7 +128,7 @@ final class FormSeedProcessor
                 $this->sectionRepository->findBy(['form' => $form]),
                 $processedTags,
                 fn (FormSection $s) => $this->sectionRepository->remove($s),
-                fn (FormSection $s) => $s->tag,
+                static fn (FormSection $s) => $s->tag,
             );
         }
     }
@@ -136,15 +136,15 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function createSection(array $data, Form $form): FormSection
     {
-        $section              = new FormSection();
-        $section->name        = (string) $data['name'];
+        $section = new FormSection();
+        $section->name = (string) $data['name'];
         $section->description = isset($data['description']) ? (string) $data['description'] : null;
-        $section->position    = (int) ($data['position'] ?? 0);
-        $section->enabled     = (bool) ($data['enabled'] ?? true);
-        $section->parameters  = (array) ($data['parameters'] ?? []);
+        $section->position = (int) ($data['position'] ?? 0);
+        $section->enabled = (bool) ($data['enabled'] ?? true);
+        $section->parameters = (array) ($data['parameters'] ?? []);
         $section->setTag((string) $data['tag']);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $section->translations = $data['translations'];
         }
 
@@ -156,13 +156,13 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function updateSection(FormSection $section, array $data): void
     {
-        $section->name       = (string) $data['name'];
+        $section->name = (string) $data['name'];
         $section->description = isset($data['description']) ? (string) $data['description'] : null;
-        $section->position   = (int) ($data['position'] ?? 0);
-        $section->enabled    = (bool) ($data['enabled'] ?? true);
+        $section->position = (int) ($data['position'] ?? 0);
+        $section->enabled = (bool) ($data['enabled'] ?? true);
         $section->parameters = (array) ($data['parameters'] ?? []);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $section->translations = $data['translations'];
         }
     }
@@ -176,10 +176,10 @@ final class FormSeedProcessor
 
         foreach ($groupsData as $groupData) {
             /** @var array<string, mixed> $groupData */
-            $tag   = (string) $groupData['tag'];
+            $tag = (string) $groupData['tag'];
             $group = $this->groupRepository->findOneBy(['section' => $section, 'tag' => $tag]);
 
-            if ($group === null) {
+            if (null === $group) {
                 $group = $this->createGroup($groupData, $section);
             } else {
                 $this->updateGroup($group, $groupData);
@@ -196,7 +196,7 @@ final class FormSeedProcessor
                 $this->groupRepository->findBy(['section' => $section]),
                 $processedTags,
                 fn (FormGroup $g) => $this->groupRepository->remove($g),
-                fn (FormGroup $g) => $g->tag,
+                static fn (FormGroup $g) => $g->tag,
             );
         }
     }
@@ -204,15 +204,15 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function createGroup(array $data, FormSection $section): FormGroup
     {
-        $group              = new FormGroup();
-        $group->name        = (string) $data['name'];
+        $group = new FormGroup();
+        $group->name = (string) $data['name'];
         $group->description = isset($data['description']) ? (string) $data['description'] : null;
-        $group->position    = (int) ($data['position'] ?? 0);
-        $group->enabled     = (bool) ($data['enabled'] ?? true);
-        $group->parameters  = (array) ($data['parameters'] ?? []);
+        $group->position = (int) ($data['position'] ?? 0);
+        $group->enabled = (bool) ($data['enabled'] ?? true);
+        $group->parameters = (array) ($data['parameters'] ?? []);
         $group->setTag((string) $data['tag']);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $group->translations = $data['translations'];
         }
 
@@ -224,13 +224,13 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function updateGroup(FormGroup $group, array $data): void
     {
-        $group->name        = (string) $data['name'];
+        $group->name = (string) $data['name'];
         $group->description = isset($data['description']) ? (string) $data['description'] : null;
-        $group->position    = (int) ($data['position'] ?? 0);
-        $group->enabled     = (bool) ($data['enabled'] ?? true);
-        $group->parameters  = (array) ($data['parameters'] ?? []);
+        $group->position = (int) ($data['position'] ?? 0);
+        $group->enabled = (bool) ($data['enabled'] ?? true);
+        $group->parameters = (array) ($data['parameters'] ?? []);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $group->translations = $data['translations'];
         }
     }
@@ -244,10 +244,10 @@ final class FormSeedProcessor
 
         foreach ($fieldsData as $fieldData) {
             /** @var array<string, mixed> $fieldData */
-            $tag   = (string) $fieldData['tag'];
+            $tag = (string) $fieldData['tag'];
             $field = $this->fieldRepository->findOneBy(['group' => $group, 'tag' => $tag]);
 
-            if ($field === null) {
+            if (null === $field) {
                 $field = $this->createField($fieldData, $group);
             } else {
                 $this->updateField($field, $fieldData);
@@ -262,7 +262,7 @@ final class FormSeedProcessor
                 $this->fieldRepository->findBy(['group' => $group]),
                 $processedTags,
                 fn (FormField $f) => $this->fieldRepository->remove($f),
-                fn (FormField $f) => $f->tag,
+                static fn (FormField $f) => $f->tag,
             );
         }
     }
@@ -270,18 +270,18 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function createField(array $data, FormGroup $group): FormField
     {
-        $field               = new FormField();
-        $field->name         = (string) $data['name'];
-        $field->description  = isset($data['description']) ? (string) $data['description'] : null;
-        $field->type         = (string) $data['type'];
-        $field->position     = (int) ($data['position'] ?? 0);
-        $field->enabled      = (bool) ($data['enabled'] ?? true);
-        $field->attributes   = (array) ($data['attributes'] ?? []);
+        $field = new FormField();
+        $field->name = (string) $data['name'];
+        $field->description = isset($data['description']) ? (string) $data['description'] : null;
+        $field->type = (string) $data['type'];
+        $field->position = (int) ($data['position'] ?? 0);
+        $field->enabled = (bool) ($data['enabled'] ?? true);
+        $field->attributes = (array) ($data['attributes'] ?? []);
         $field->interactions = isset($data['interactions']) ? (array) $data['interactions'] : null;
-        $field->parameters   = (array) ($data['parameters'] ?? []);
+        $field->parameters = (array) ($data['parameters'] ?? []);
         $field->setTag((string) $data['tag']);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $field->translations = $data['translations'];
         }
 
@@ -293,24 +293,25 @@ final class FormSeedProcessor
     /** @param array<string, mixed> $data */
     private function updateField(FormField $field, array $data): void
     {
-        $field->name        = (string) $data['name'];
+        $field->name = (string) $data['name'];
         $field->description = isset($data['description']) ? (string) $data['description'] : null;
-        $field->type        = (string) $data['type'];
-        $field->position    = (int) ($data['position'] ?? 0);
-        $field->enabled     = (bool) ($data['enabled'] ?? true);
-        $field->attributes  = (array) ($data['attributes'] ?? []);
+        $field->type = (string) $data['type'];
+        $field->position = (int) ($data['position'] ?? 0);
+        $field->enabled = (bool) ($data['enabled'] ?? true);
+        $field->attributes = (array) ($data['attributes'] ?? []);
         $field->interactions = isset($data['interactions']) ? (array) $data['interactions'] : null;
-        $field->parameters  = (array) ($data['parameters'] ?? []);
+        $field->parameters = (array) ($data['parameters'] ?? []);
 
-        if (isset($data['translations']) && is_array($data['translations'])) {
+        if (isset($data['translations']) && \is_array($data['translations'])) {
             $field->translations = $data['translations'];
         }
     }
 
     /**
      * @template T of object
-     * @param list<T>        $existingEntities
-     * @param list<string>   $processedTags
+     *
+     * @param list<T>             $existingEntities
+     * @param list<string>        $processedTags
      * @param callable(T): void   $removeCallback
      * @param callable(T): string $tagCallback
      */
@@ -321,7 +322,7 @@ final class FormSeedProcessor
         callable $tagCallback,
     ): void {
         foreach ($existingEntities as $entity) {
-            if (!in_array($tagCallback($entity), $processedTags, true)) {
+            if (!\in_array($tagCallback($entity), $processedTags, true)) {
                 $removeCallback($entity);
             }
         }

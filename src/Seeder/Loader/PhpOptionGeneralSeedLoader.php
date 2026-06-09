@@ -16,16 +16,16 @@ final class PhpOptionGeneralSeedLoader implements SeedLoaderInterface
     }
 
     /** @return list<SeedSource> */
-    public function load(?string $filter = null): array
+    public function load(string|null $filter = null): array
     {
         $sources = [];
 
         foreach ($this->seeders as $seeder) {
-            $data     = $seeder->getOptionGeneralData();
-            $tag      = (string) ($data['tag'] ?? '');
-            $checksum = hash('sha256', json_encode(['option_general' => $data], JSON_THROW_ON_ERROR));
+            $data = $seeder->getOptionGeneralData();
+            $tag = (string) ($data['tag'] ?? '');
+            $checksum = hash('sha256', json_encode(['option_general' => $data], \JSON_THROW_ON_ERROR));
 
-            if ($filter !== null && $tag !== $filter) {
+            if (null !== $filter && $tag !== $filter) {
                 continue;
             }
 

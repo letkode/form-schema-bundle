@@ -27,15 +27,15 @@ final class OptionGeneralSeedProcessor
     {
         $errors = $this->validator->validate($source->data);
 
-        if ($errors !== []) {
+        if ([] !== $errors) {
             return ProcessorResult::error($source->tag, $source->sourceName, $errors);
         }
 
         /** @var array<string, mixed> $optionData */
         $optionData = $source->data['option_general'];
 
-        $option  = $this->optionGeneralRepository->findOneByTag($source->tag);
-        $created = $option === null;
+        $option = $this->optionGeneralRepository->findOneByTag($source->tag);
+        $created = null === $option;
 
         if (!$created && !$force && $option->seedChecksum === $source->checksum) {
             return ProcessorResult::skipped($source->tag, $source->sourceName);
@@ -64,7 +64,7 @@ final class OptionGeneralSeedProcessor
     /** @param array<string, mixed> $data */
     private function createOptionGeneral(array $data): FormOptionGeneral
     {
-        $option       = new FormOptionGeneral();
+        $option = new FormOptionGeneral();
         $option->name = (string) $data['name'];
         $option->setTag((string) $data['tag']);
 
@@ -88,10 +88,10 @@ final class OptionGeneralSeedProcessor
 
         foreach ($valuesData as $valueData) {
             /** @var array<string, mixed> $valueData */
-            $tag   = (string) $valueData['tag'];
+            $tag = (string) $valueData['tag'];
             $value = $this->valueRepository->findOneBy(['group' => $option, 'tag' => $tag]);
 
-            if ($value === null) {
+            if (null === $value) {
                 $value = $this->createValue($valueData, $option);
             } else {
                 $this->updateValue($value, $valueData);
@@ -103,7 +103,7 @@ final class OptionGeneralSeedProcessor
 
         if ($prune) {
             foreach ($this->valueRepository->findBy(['group' => $option]) as $existing) {
-                if (!in_array($existing->tag, $processedTags, true)) {
+                if (!\in_array($existing->tag, $processedTags, true)) {
                     $this->valueRepository->remove($existing);
                 }
             }
@@ -113,11 +113,11 @@ final class OptionGeneralSeedProcessor
     /** @param array<string, mixed> $data */
     private function createValue(array $data, FormOptionGeneral $option): FormOptionGeneralValue
     {
-        $value              = new FormOptionGeneralValue();
-        $value->label       = (string) $data['label'];
+        $value = new FormOptionGeneralValue();
+        $value->label = (string) $data['label'];
         $value->description = isset($data['description']) ? (string) $data['description'] : null;
-        $value->position    = (int) ($data['position'] ?? 0);
-        $value->enabled     = (bool) ($data['enabled'] ?? true);
+        $value->position = (int) ($data['position'] ?? 0);
+        $value->enabled = (bool) ($data['enabled'] ?? true);
         $value->setTag((string) $data['tag']);
 
         $option->addValue($value);
@@ -128,9 +128,9 @@ final class OptionGeneralSeedProcessor
     /** @param array<string, mixed> $data */
     private function updateValue(FormOptionGeneralValue $value, array $data): void
     {
-        $value->label       = (string) $data['label'];
+        $value->label = (string) $data['label'];
         $value->description = isset($data['description']) ? (string) $data['description'] : null;
-        $value->position    = (int) ($data['position'] ?? 0);
-        $value->enabled     = (bool) ($data['enabled'] ?? true);
+        $value->position = (int) ($data['position'] ?? 0);
+        $value->enabled = (bool) ($data['enabled'] ?? true);
     }
 }

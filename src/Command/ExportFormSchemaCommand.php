@@ -39,19 +39,19 @@ final class ExportFormSchemaCommand extends Command
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io         = new SymfonyStyle($input, $output);
-        $type       = (string) $input->getArgument('type');
-        $tag        = (string) $input->getArgument('tag');
-        $outputPath = $input->getOption('output') !== null ? (string) $input->getOption('output') : null;
+        $io = new SymfonyStyle($input, $output);
+        $type = (string) $input->getArgument('type');
+        $tag = (string) $input->getArgument('tag');
+        $outputPath = null !== $input->getOption('output') ? (string) $input->getOption('output') : null;
 
-        if (!in_array($type, ['form', 'option-general'], true)) {
+        if (!\in_array($type, ['form', 'option-general'], true)) {
             $io->error('Invalid type. Use "form" or "option-general".');
 
             return Command::FAILURE;
         }
 
         try {
-            $yaml = $type === 'form'
+            $yaml = 'form' === $type
                 ? $this->formExporter->export($tag)
                 : $this->optionExporter->export($tag);
         } catch (\Throwable $e) {
@@ -60,16 +60,16 @@ final class ExportFormSchemaCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($outputPath !== null) {
+        if (null !== $outputPath) {
             $written = file_put_contents($outputPath, $yaml);
 
-            if ($written === false) {
-                $io->error(sprintf('Could not write to file "%s".', $outputPath));
+            if (false === $written) {
+                $io->error(\sprintf('Could not write to file "%s".', $outputPath));
 
                 return Command::FAILURE;
             }
 
-            $io->success(sprintf('Exported %s "%s" to %s', $type, $tag, $outputPath));
+            $io->success(\sprintf('Exported %s "%s" to %s', $type, $tag, $outputPath));
 
             return Command::SUCCESS;
         }

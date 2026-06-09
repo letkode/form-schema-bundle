@@ -20,7 +20,7 @@ final class FormYamlExporterTest extends TestCase
     protected function setUp(): void
     {
         $this->repository = $this->createMock(FormRepositoryInterface::class);
-        $this->exporter   = new FormYamlExporter($this->repository);
+        $this->exporter = new FormYamlExporter($this->repository);
     }
 
     #[Test]
@@ -36,7 +36,7 @@ final class FormYamlExporterTest extends TestCase
     #[Test]
     public function testExportReturnsValidYamlWithFormKey(): void
     {
-        $form       = new Form();
+        $form = new Form();
         $form->name = 'Contact Form';
         $form->setTag('contact');
 

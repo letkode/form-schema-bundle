@@ -43,18 +43,18 @@ final class SeedFormOptionsCommand extends Command
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io     = new SymfonyStyle($input, $output);
-        $filter = $input->getOption('option') !== null ? (string) $input->getOption('option') : null;
-        $prune  = (bool) $input->getOption('prune');
-        $force  = (bool) $input->getOption('force');
+        $io = new SymfonyStyle($input, $output);
+        $filter = null !== $input->getOption('option') ? (string) $input->getOption('option') : null;
+        $prune = (bool) $input->getOption('prune');
+        $force = (bool) $input->getOption('force');
 
         $sources = array_merge(
             $this->yamlLoader->load($filter),
             $this->phpLoader->load($filter),
         );
 
-        if ($sources === []) {
-            $io->warning($filter !== null
+        if ([] === $sources) {
+            $io->warning(null !== $filter
                 ? "No option general found with tag \"{$filter}\"."
                 : 'No seed files or PHP class seeders found.');
 
@@ -71,13 +71,13 @@ final class SeedFormOptionsCommand extends Command
 
         $this->renderResultsTable($output, $results);
 
-        $errors = array_filter($results, fn (ProcessorResult $r) => $r->status === SeedStatus::Error);
+        $errors = array_filter($results, static fn (ProcessorResult $r) => SeedStatus::Error === $r->status);
 
-        if ($errors !== []) {
+        if ([] !== $errors) {
             return Command::FAILURE;
         }
 
-        $io->success(sprintf('Processed %d option general(s).', count($results)));
+        $io->success(\sprintf('Processed %d option general(s).', \count($results)));
 
         return Command::SUCCESS;
     }
@@ -87,10 +87,10 @@ final class SeedFormOptionsCommand extends Command
      */
     private function assertNoDuplicateTags(array $sources, SymfonyStyle $io): void
     {
-        $tags  = array_map(fn ($s) => $s->tag, $sources);
-        $dupes = array_keys(array_filter(array_count_values($tags), fn (int $c) => $c > 1));
+        $tags = array_map(static fn ($s) => $s->tag, $sources);
+        $dupes = array_keys(array_filter(array_count_values($tags), static fn (int $c) => $c > 1));
 
-        if ($dupes !== []) {
+        if ([] !== $dupes) {
             $io->error('Duplicate seed tags found: ' . implode(', ', $dupes));
             exit(Command::FAILURE);
         }
@@ -109,7 +109,7 @@ final class SeedFormOptionsCommand extends Command
                 SeedStatus::Created => '<info>created</info>',
                 SeedStatus::Updated => '<comment>updated</comment>',
                 SeedStatus::Skipped => 'skipped',
-                SeedStatus::Error   => '<error>error</error>',
+                SeedStatus::Error => '<error>error</error>',
             };
 
             $table->addRow([

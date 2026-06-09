@@ -20,7 +20,7 @@ final class OptionGeneralYamlExporter
     {
         $option = $this->optionGeneralRepository->findOneByTag($tag);
 
-        if ($option === null) {
+        if (null === $option) {
             throw new \InvalidArgumentException("Option general with tag \"{$tag}\" not found.");
         }
 
@@ -32,8 +32,8 @@ final class OptionGeneralYamlExporter
     {
         return [
             'option_general' => [
-                'tag'    => $option->tag,
-                'name'   => $option->name,
+                'tag' => $option->tag,
+                'name' => $option->name,
                 'values' => array_values(
                     array_map(
                         fn (FormOptionGeneralValue $v) => $this->valueToArray($v),
@@ -48,11 +48,11 @@ final class OptionGeneralYamlExporter
     private function valueToArray(FormOptionGeneralValue $value): array
     {
         return [
-            'tag'         => $value->tag,
-            'label'       => $value->label,
+            'tag' => $value->tag,
+            'label' => $value->label,
             'description' => $value->description,
-            'position'    => $value->position,
-            'enabled'     => $value->enabled,
+            'position' => $value->position,
+            'enabled' => $value->enabled,
         ];
     }
 }

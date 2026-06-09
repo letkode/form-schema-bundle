@@ -11,7 +11,7 @@ final class FormSeedValidationException extends \RuntimeException
         private readonly array $errors,
         string $context = '',
     ) {
-        $prefix  = $context !== '' ? "[{$context}] " : '';
+        $prefix = '' !== $context ? "[{$context}] " : '';
         $message = $prefix . 'Seed validation failed: ' . implode('; ', $errors);
 
         parent::__construct($message);

@@ -9,5 +9,5 @@ use Letkode\FormSchemaBundle\Seeder\ValueObject\SeedSource;
 interface SeedLoaderInterface
 {
     /** @return list<SeedSource> */
-    public function load(?string $filter = null): array;
+    public function load(string|null $filter = null): array;
 }

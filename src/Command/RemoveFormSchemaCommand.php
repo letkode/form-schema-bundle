@@ -37,18 +37,18 @@ final class RemoveFormSchemaCommand extends Command
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io   = new SymfonyStyle($input, $output);
+        $io = new SymfonyStyle($input, $output);
         $type = (string) $input->getArgument('type');
-        $tag  = (string) $input->getArgument('tag');
+        $tag = (string) $input->getArgument('tag');
 
-        if (!in_array($type, ['form', 'option-general'], true)) {
+        if (!\in_array($type, ['form', 'option-general'], true)) {
             $io->error('Invalid type. Use "form" or "option-general".');
 
             return Command::FAILURE;
         }
 
         $confirmed = $io->confirm(
-            sprintf('Are you sure you want to remove %s "%s"? This action soft-deletes all related data.', $type, $tag),
+            \sprintf('Are you sure you want to remove %s "%s"? This action soft-deletes all related data.', $type, $tag),
             false,
         );
 
@@ -58,7 +58,7 @@ final class RemoveFormSchemaCommand extends Command
             return Command::SUCCESS;
         }
 
-        if ($type === 'form') {
+        if ('form' === $type) {
             return $this->removeForm($tag, $io);
         }
 
@@ -69,14 +69,14 @@ final class RemoveFormSchemaCommand extends Command
     {
         $form = $this->formRepository->findOneByTag($tag);
 
-        if ($form === null) {
-            $io->error(sprintf('Form with tag "%s" not found.', $tag));
+        if (null === $form) {
+            $io->error(\sprintf('Form with tag "%s" not found.', $tag));
 
             return Command::FAILURE;
         }
 
         $this->formRepository->remove($form, true);
-        $io->success(sprintf('Form "%s" has been removed.', $tag));
+        $io->success(\sprintf('Form "%s" has been removed.', $tag));
 
         return Command::SUCCESS;
     }
@@ -85,14 +85,14 @@ final class RemoveFormSchemaCommand extends Command
     {
         $option = $this->optionGeneralRepository->findOneByTag($tag);
 
-        if ($option === null) {
-            $io->error(sprintf('Option general with tag "%s" not found.', $tag));
+        if (null === $option) {
+            $io->error(\sprintf('Option general with tag "%s" not found.', $tag));
 
             return Command::FAILURE;
         }
 
         $this->optionGeneralRepository->remove($option, true);
-        $io->success(sprintf('Option general "%s" has been removed.', $tag));
+        $io->success(\sprintf('Option general "%s" has been removed.', $tag));
 
         return Command::SUCCESS;
     }

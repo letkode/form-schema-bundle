@@ -42,7 +42,7 @@ final class OptionGeneralSeedValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'option_general.tag')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'option_general.tag')));
     }
 
     #[Test]
@@ -54,19 +54,19 @@ final class OptionGeneralSeedValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'label')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'label')));
     }
 
     #[Test]
     public function testInvalidValuePositionReturnsError(): void
     {
-        $data                                               = $this->validData();
+        $data = $this->validData();
         $data['option_general']['values'][0]['position'] = -5;
 
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'position')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'position')));
     }
 
     /** @return array<string, mixed> */
@@ -74,8 +74,8 @@ final class OptionGeneralSeedValidatorTest extends TestCase
     {
         return [
             'option_general' => [
-                'tag'    => 'countries',
-                'name'   => 'Countries',
+                'tag' => 'countries',
+                'name' => 'Countries',
                 'values' => [
                     ['tag' => 'mx', 'label' => 'Mexico', 'position' => 0, 'enabled' => true],
                     ['tag' => 'us', 'label' => 'United States', 'position' => 1, 'enabled' => true],

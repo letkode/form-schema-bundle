@@ -22,7 +22,7 @@ final class FormYamlExporter
     {
         $form = $this->formRepository->findOneByTag($tag);
 
-        if ($form === null) {
+        if (null === $form) {
             throw new FormNotFoundException($tag);
         }
 
@@ -34,12 +34,12 @@ final class FormYamlExporter
     {
         return [
             'form' => [
-                'tag'          => $form->tag,
-                'name'         => $form->name,
-                'enabled'      => $form->enabled,
+                'tag' => $form->tag,
+                'name' => $form->name,
+                'enabled' => $form->enabled,
                 'default_lang' => $form->defaultLang,
-                'parameters'   => $form->parameters ?: [],
-                'sections'     => array_values(
+                'parameters' => $form->parameters ?: [],
+                'sections' => array_values(
                     array_map(
                         fn (FormSection $s) => $this->sectionToArray($s),
                         $form->sections->toArray(),
@@ -53,13 +53,13 @@ final class FormYamlExporter
     private function sectionToArray(FormSection $section): array
     {
         return [
-            'tag'         => $section->tag,
-            'name'        => $section->name,
+            'tag' => $section->tag,
+            'name' => $section->name,
             'description' => $section->description,
-            'position'    => $section->position,
-            'enabled'     => $section->enabled,
-            'parameters'  => $section->parameters ?: [],
-            'groups'      => array_values(
+            'position' => $section->position,
+            'enabled' => $section->enabled,
+            'parameters' => $section->parameters ?: [],
+            'groups' => array_values(
                 array_map(
                     fn (FormGroup $g) => $this->groupToArray($g),
                     $section->groups->toArray(),
@@ -72,13 +72,13 @@ final class FormYamlExporter
     private function groupToArray(FormGroup $group): array
     {
         return [
-            'tag'         => $group->tag,
-            'name'        => $group->name,
+            'tag' => $group->tag,
+            'name' => $group->name,
             'description' => $group->description,
-            'position'    => $group->position,
-            'enabled'     => $group->enabled,
-            'parameters'  => $group->parameters ?: [],
-            'fields'      => array_values(
+            'position' => $group->position,
+            'enabled' => $group->enabled,
+            'parameters' => $group->parameters ?: [],
+            'fields' => array_values(
                 array_map(
                     fn (FormField $f) => $this->fieldToArray($f),
                     $group->fields->toArray(),
@@ -91,14 +91,14 @@ final class FormYamlExporter
     private function fieldToArray(FormField $field): array
     {
         return [
-            'tag'          => $field->tag,
-            'name'         => $field->name,
-            'description'  => $field->description,
-            'type'         => $field->type,
-            'position'     => $field->position,
-            'enabled'      => $field->enabled,
-            'parameters'   => $field->parameters ?: [],
-            'attributes'   => $field->attributes ?: [],
+            'tag' => $field->tag,
+            'name' => $field->name,
+            'description' => $field->description,
+            'type' => $field->type,
+            'position' => $field->position,
+            'enabled' => $field->enabled,
+            'parameters' => $field->parameters ?: [],
+            'attributes' => $field->attributes ?: [],
             'interactions' => $field->interactions,
         ];
     }

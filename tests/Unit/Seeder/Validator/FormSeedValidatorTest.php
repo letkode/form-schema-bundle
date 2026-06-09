@@ -16,7 +16,7 @@ final class FormSeedValidatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $registry        = new FieldTypeRegistry(new \ArrayIterator([new StringFieldType()]));
+        $registry = new FieldTypeRegistry(new \ArrayIterator([new StringFieldType()]));
         $this->validator = new FormSeedValidator($registry);
     }
 
@@ -57,55 +57,55 @@ final class FormSeedValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'form.name')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'form.name')));
     }
 
     #[Test]
     public function testTagExceedingMaxLengthReturnsError(): void
     {
-        $data                = $this->validFormData();
+        $data = $this->validFormData();
         $data['form']['tag'] = str_repeat('a', 101);
 
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, '100 characters')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, '100 characters')));
     }
 
     #[Test]
     public function testUnknownFieldTypeReturnsError(): void
     {
-        $data                                                                    = $this->validFormData();
+        $data = $this->validFormData();
         $data['form']['sections'][0]['groups'][0]['fields'][0]['type'] = 'unknown_type';
 
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'unknown_type')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'unknown_type')));
     }
 
     #[Test]
     public function testInvalidPositionReturnsError(): void
     {
-        $data                                                                        = $this->validFormData();
+        $data = $this->validFormData();
         $data['form']['sections'][0]['groups'][0]['fields'][0]['position'] = -1;
 
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'position')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'position')));
     }
 
     #[Test]
     public function testInvalidEnabledValueReturnsError(): void
     {
-        $data                         = $this->validFormData();
+        $data = $this->validFormData();
         $data['form']['enabled'] = 'yes';
 
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, fn (string $e) => str_contains($e, 'enabled')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'enabled')));
     }
 
     /** @return array<string, mixed> */
@@ -113,30 +113,30 @@ final class FormSeedValidatorTest extends TestCase
     {
         return [
             'form' => [
-                'tag'          => 'contact',
-                'name'         => 'Contact Form',
-                'enabled'      => true,
+                'tag' => 'contact',
+                'name' => 'Contact Form',
+                'enabled' => true,
                 'default_lang' => 'es',
-                'parameters'   => ['type_render' => 'default'],
-                'sections'     => [
+                'parameters' => ['type_render' => 'default'],
+                'sections' => [
                     [
-                        'tag'      => 'personal',
-                        'name'     => 'Personal',
+                        'tag' => 'personal',
+                        'name' => 'Personal',
                         'position' => 0,
-                        'enabled'  => true,
-                        'groups'   => [
+                        'enabled' => true,
+                        'groups' => [
                             [
-                                'tag'      => 'names',
-                                'name'     => 'Names',
+                                'tag' => 'names',
+                                'name' => 'Names',
                                 'position' => 0,
-                                'enabled'  => true,
-                                'fields'   => [
+                                'enabled' => true,
+                                'fields' => [
                                     [
-                                        'tag'      => 'first_name',
-                                        'name'     => 'First Name',
-                                        'type'     => 'string',
+                                        'tag' => 'first_name',
+                                        'name' => 'First Name',
+                                        'type' => 'string',
                                         'position' => 0,
-                                        'enabled'  => true,
+                                        'enabled' => true,
                                     ],
                                 ],
                             ],

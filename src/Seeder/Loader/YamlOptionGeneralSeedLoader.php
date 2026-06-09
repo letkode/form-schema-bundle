@@ -15,7 +15,7 @@ final class YamlOptionGeneralSeedLoader implements SeedLoaderInterface
     }
 
     /** @return list<SeedSource> */
-    public function load(?string $filter = null): array
+    public function load(string|null $filter = null): array
     {
         $dir = rtrim($this->seedsPath, '/') . '/general-options';
 
@@ -28,19 +28,19 @@ final class YamlOptionGeneralSeedLoader implements SeedLoaderInterface
         foreach (glob($dir . '/*.yaml') ?: [] as $path) {
             $filename = basename($path, '.yaml');
 
-            if ($filter !== null && $filename !== $filter) {
+            if (null !== $filter && $filename !== $filter) {
                 continue;
             }
 
             $rawContent = file_get_contents($path);
 
-            if ($rawContent === false) {
+            if (false === $rawContent) {
                 continue;
             }
 
             /** @var array<string, mixed> $data */
-            $data     = Yaml::parse($rawContent) ?? [];
-            $tag      = (string) ($data['option_general']['tag'] ?? $filename);
+            $data = Yaml::parse($rawContent) ?? [];
+            $tag = (string) ($data['option_general']['tag'] ?? $filename);
             $checksum = hash('sha256', $rawContent);
 
             $sources[] = new SeedSource(
