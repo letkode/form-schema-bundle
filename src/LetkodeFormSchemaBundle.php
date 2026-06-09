@@ -64,7 +64,7 @@ class LetkodeFormSchemaBundle extends AbstractBundle
                 ->arrayNode('disabled_form_renders')->scalarPrototype()->end()->defaultValue([])->end()
                 ->arrayNode('disabled_section_renders')->scalarPrototype()->end()->defaultValue([])->end()
                 ->arrayNode('disabled_group_renders')->scalarPrototype()->end()->defaultValue([])->end()
-                ->scalarNode('seeds_path')->defaultValue('%kernel.project_dir%/config/seeds/form-schema')->end()
+                ->scalarNode('seeds_path')->defaultValue('%kernel.project_dir%/config/seeds/form_schema')->end()
             ->end()
         ;
     }
