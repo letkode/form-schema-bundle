@@ -28,8 +28,13 @@ letkode_form_schema:
         form_section: ~                         # default: 'form_section'
         form_group: ~                           # default: 'form_group'
         form_field: ~                           # default: 'form_field'
-        form_option_general: ~                  # default: 'form_option_general'
-        form_option_general_value: ~            # default: 'form_option_general_value'
+        form_option: ~                          # default: 'form_option'
+        form_option_value: ~                    # default: 'form_option_value'
+
+    # ── Seeders ─────────────────────────────────────────────────────────────
+    # Ruta raíz donde el sistema busca archivos YAML de seeds.
+    # Subdirectorios esperados: forms/ y general_options/
+    seeds_path: '%kernel.project_dir%/config/seeds/form_schema'   # default
 
     # ── Caché PSR-6 ─────────────────────────────────────────────────────────
     cache:
@@ -102,7 +107,7 @@ letkode_form_schema:
     table_prefix: 'dyn_'
     table_names:
         form: 'core_forms'          # nombre final: core_forms (sin prefijo)
-        form_option_general: 'option_catalog'
+        form_option: 'option_catalog'
     # Resultado: core_forms, dyn_form_section, dyn_form_group,
-    #            dyn_form_field, option_catalog, dyn_form_option_general_value
+    #            dyn_form_field, option_catalog, dyn_form_option_value
 ```

@@ -58,8 +58,8 @@ Esto crea las 6 tablas del bundle:
 | `form_section` | `FormSection` — sección dentro del formulario |
 | `form_group` | `FormGroup` — grupo de campos dentro de una sección |
 | `form_field` | `FormField` — campo individual |
-| `form_option_general` | `FormOptionGeneral` — catálogo de opciones reutilizable |
-| `form_option_general_value` | `FormOptionGeneralValue` — valores del catálogo |
+| `form_option` | `FormOption` — catálogo de opciones reutilizable |
+| `form_option_value` | `FormOptionValue` — valores del catálogo |
 
 > Los nombres de tabla son personalizables con `table_prefix` y `table_names`. Ver [Nombres de tabla](table-names.md).
 
@@ -80,7 +80,7 @@ Ver la referencia completa en [Configuración](configuration.md).
 | Dependencia | Versión mínima |
 |---|---|
 | PHP | 8.4 |
-| Symfony | ^7.0 |
+| Symfony | ^7.0 \| ^8.0 |
 | Doctrine ORM | ^3.4 |
 | Gedmo/DoctrineExtensions | ^3.0 (para SoftDelete) |
 | symfony/uid | ^7.0 (para UuidV7) |

@@ -1,10 +1,114 @@
 # Changelog
 
+## [1.0.1] - 2026-06-09
+
+### Added
+
+- **Symfony 8.x compatibility** — ampliar constraints de `symfony/*` a `^7.0 || ^8.0`
+- **Sistema de seeders** — mecanismo declarativo para poblar y mantener schemas de formularios desde archivos versionados (ver [docs/seeders.md](docs/seeders.md)):
+  - Dos formatos de fuente: archivos YAML (`config/seeds/form_schema/`) y clases PHP (`implements FormSeederInterface` / `OptionSeederInterface`)
+  - Tracking automático por checksum sha256 en columna `seed_checksum` — los seeds sin cambios se saltan automáticamente
+  - Cuatro comandos de consola:
+    - `letkode:form-schema:seed` — siembra formularios (`--seed`, `--prune`, `--force`)
+    - `letkode:form-schema:seed:options` — siembra catálogos de opciones (`--option`, `--prune`, `--force`)
+    - `letkode:form-schema:remove <type> <tag>` — soft-delete de un formulario u opción
+    - `letkode:form-schema:export <type> <tag>` — exporta un formulario u opción a YAML (`--output`)
+  - Clave de configuración `seeds_path` (default `%kernel.project_dir%/config/seeds/form_schema`)
+  - `symfony/yaml` incorporado como dependencia directa
+- **Atributos PHP** `#[AsFormSeed]` y `#[AsOptionSeed]` para autodescubrir seeders PHP vía service tags
+
+### Changed
+
+> **BREAKING** — requiere migración de BD y actualización de código si usabas las entidades directamente.
+
+- **`FormOptionGeneral` → `FormOption`**: clase PHP renombrada; tabla BD `form_option_general` → `form_option`
+- **`FormOptionGeneralValue` → `FormOptionValue`**: clase PHP renombrada; tabla BD `form_option_general_value` → `form_option_value`
+- **Config `table_names`**: claves `form_option_general` y `form_option_general_value` → `form_option` y `form_option_value`
+- **`OptionGeneralSeederInterface`** eliminada; reemplazada por `OptionSeederInterface` con método `getOptionData()` (antes `getOptionGeneralData()`)
+- **YAML seed key**: la clave raíz de los archivos de opciones cambia de `option_general:` a `option:`
+
+### Fixed
+
+- Recipe Symfony Flex: notación en underscore obligatoria en nombres de directorio bajo `config/`
+- Recipe Symfony Flex: directorios de seeds eliminados de `copy-from-recipe` (no permitido por el validador Flex)
+- Recipe: reemplazados `.gitkeep` por `.gitignore` en directorios de seeds
+
+### Migration guide
+
+**1. Migración de BD** (necesaria aunque no hayas personalizado nombres de tabla):
+
+```bash
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+```
+
+Las migraciones renombrarán `form_option_general` → `form_option` y `form_option_general_value` → `form_option_value`, y añadirán la columna `seed_checksum` en `form` y `form_option`.
+
+**2. Config** — si tenías `table_names` con los nombres anteriores:
+
+```yaml
+# antes
+table_names:
+    form_option_general: my_custom_name
+    form_option_general_value: my_custom_value_name
+
+# después
+table_names:
+    form_option: my_custom_name
+    form_option_value: my_custom_value_name
+```
+
+**3. Código** — actualiza cualquier import o referencia directa a las entidades:
+
+```php
+// antes
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneral;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
+use Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface;
+
+// después
+use Letkode\FormSchemaBundle\Domain\Entity\FormOption;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
+use Letkode\FormSchemaBundle\Domain\Repository\FormOptionRepositoryInterface;
+```
+
+**4. Seeders PHP** — si implementabas `OptionGeneralSeederInterface`:
+
+```php
+// antes
+class MySeeder implements OptionGeneralSeederInterface
+{
+    public function getOptionGeneralData(): array { ... }
+}
+
+// después
+class MySeeder implements OptionSeederInterface
+{
+    public function getOptionData(): array { ... }
+}
+```
+
+**5. YAML de opciones** — renombrar la clave raíz:
+
+```yaml
+# antes
+option_general:
+  tag: countries
+  ...
+
+# después
+option:
+  tag: countries
+  ...
+```
+
+---
+
 ## [1.0.0] - 2026-06-09
 
 ### Added
 - Initial release of `letkode/form-schema-bundle` Symfony Bundle
-- 6 Doctrine entities: `Form`, `FormSection`, `FormGroup`, `FormField`, `FormOptionGeneral`, `FormOptionGeneralValue`
+- 6 Doctrine entities: `Form`, `FormSection`, `FormGroup`, `FormField`, `FormOptionGeneral` (→ `FormOption` en 1.0.1), `FormOptionGeneralValue` (→ `FormOptionValue` en 1.0.1)
 - 22 built-in field types with extensible Strategy + Registry pattern
 - `FieldTypeInterface::getDefaultParams(): array` — each FieldType declares its UI params with defaults; the resolver merges them with DB-stored params (DB wins)
 - `SelectFieldType` (`select`) — single-select. Params: `size`, `searchable`, `tags_mode`, `search_limit`, `min_search_length`. Value: `string|null`

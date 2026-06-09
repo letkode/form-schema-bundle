@@ -4,7 +4,7 @@ Symfony Bundle para formularios dinámicos configurables desde base de datos.
 
 Modela formularios en una jerarquía **Form → Section → Group → Field**, con i18n dinámico, 22 tipos de campo predefinidos y extensibles, opciones desde catálogo interno o repositorios del proyecto, renders estructurales en 3 niveles y caché PSR-6 opt-in.
 
-**Requiere** PHP 8.4 · Symfony 7.x · Doctrine ORM ^3.4
+**Requiere** PHP 8.4 · Symfony 7.x / 8.x · Doctrine ORM ^3.4
 
 ---
 
@@ -22,6 +22,7 @@ Modela formularios en una jerarquía **Form → Section → Group → Field**, c
 | [Nombres de tabla](docs/table-names.md) | Personalizar tablas con `table_prefix` y `table_names` |
 | [Extensibilidad](docs/extending.md) | Crear tipos de campo, fuentes y renders propios |
 | [Traducciones](docs/translations.md) | Estructura i18n, cómo se resuelve el locale activo |
+| [Seeders](docs/seeders.md) | Poblar schemas desde YAML o clases PHP, comandos de consola |
 
 ---
 
@@ -73,9 +74,12 @@ Form
 └── FormSection[]
     └── FormGroup[]
         └── FormField[]
+
+FormOption
+└── FormOptionValue[]
 ```
 
-Cada nivel puede tener `parameters` (JSON libre), traducciones y un `type_render` que controla su render estructural.
+Cada nivel puede tener `parameters` (JSON libre), traducciones y un `type_render` que controla su render estructural. `FormOption` es el catálogo de opciones reutilizable (antes `FormOptionGeneral`).
 
 ### Renders en 3 niveles
 
