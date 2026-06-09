@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Letkode\FormSchemaBundle\Command;
 
 use Letkode\FormSchemaBundle\Seeder\Enum\SeedStatus;
-use Letkode\FormSchemaBundle\Seeder\Loader\PhpOptionGeneralSeedLoader;
-use Letkode\FormSchemaBundle\Seeder\Loader\YamlOptionGeneralSeedLoader;
-use Letkode\FormSchemaBundle\Seeder\Processor\OptionGeneralSeedProcessor;
+use Letkode\FormSchemaBundle\Seeder\Loader\PhpOptionSeedLoader;
+use Letkode\FormSchemaBundle\Seeder\Loader\YamlOptionSeedLoader;
+use Letkode\FormSchemaBundle\Seeder\Processor\OptionSeedProcessor;
 use Letkode\FormSchemaBundle\Seeder\ValueObject\ProcessorResult;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,9 +24,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SeedFormOptionsCommand extends Command
 {
     public function __construct(
-        private readonly YamlOptionGeneralSeedLoader $yamlLoader,
-        private readonly PhpOptionGeneralSeedLoader $phpLoader,
-        private readonly OptionGeneralSeedProcessor $processor,
+        private readonly YamlOptionSeedLoader $yamlLoader,
+        private readonly PhpOptionSeedLoader $phpLoader,
+        private readonly OptionSeedProcessor $processor,
     ) {
         parent::__construct();
     }
@@ -77,7 +77,7 @@ final class SeedFormOptionsCommand extends Command
             return Command::FAILURE;
         }
 
-        $io->success(\sprintf('Processed %d option general(s).', \count($results)));
+        $io->success(\sprintf('Processed %d option(s).', \count($results)));
 
         return Command::SUCCESS;
     }

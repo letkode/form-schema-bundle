@@ -15,7 +15,7 @@ use Letkode\FormSchemaBundle\Infrastructure\Cache\CachedFormSchemaResolver;
 use Letkode\FormSchemaBundle\Infrastructure\Cache\DoctrineCacheInvalidationSubscriber;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\TableNameSubscriber;
 use Letkode\FormSchemaBundle\Seeder\Contract\FormSeederInterface;
-use Letkode\FormSchemaBundle\Seeder\Contract\OptionGeneralSeederInterface;
+use Letkode\FormSchemaBundle\Seeder\Contract\OptionSeederInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -45,8 +45,8 @@ class LetkodeFormSchemaBundle extends AbstractBundle
                         ->scalarNode('form_section')->defaultNull()->end()
                         ->scalarNode('form_group')->defaultNull()->end()
                         ->scalarNode('form_field')->defaultNull()->end()
-                        ->scalarNode('form_option_general')->defaultNull()->end()
-                        ->scalarNode('form_option_general_value')->defaultNull()->end()
+                        ->scalarNode('form_option')->defaultNull()->end()
+                        ->scalarNode('form_option_value')->defaultNull()->end()
                     ->end()
                 ->end()
                 ->arrayNode('cache')
@@ -155,7 +155,7 @@ class LetkodeFormSchemaBundle extends AbstractBundle
         $container->registerForAutoconfiguration(FormSeederInterface::class)
             ->addTag('form_schema.form_seed');
 
-        $container->registerForAutoconfiguration(OptionGeneralSeederInterface::class)
-            ->addTag('form_schema.option_general_seed');
+        $container->registerForAutoconfiguration(OptionSeederInterface::class)
+            ->addTag('form_schema.option_seed');
     }
 }

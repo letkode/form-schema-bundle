@@ -8,7 +8,7 @@ use Letkode\FormSchemaBundle\Seeder\Contract\SeedLoaderInterface;
 use Letkode\FormSchemaBundle\Seeder\ValueObject\SeedSource;
 use Symfony\Component\Yaml\Yaml;
 
-final class YamlOptionGeneralSeedLoader implements SeedLoaderInterface
+final class YamlOptionSeedLoader implements SeedLoaderInterface
 {
     public function __construct(private readonly string $seedsPath)
     {
@@ -40,7 +40,7 @@ final class YamlOptionGeneralSeedLoader implements SeedLoaderInterface
 
             /** @var array<string, mixed> $data */
             $data = Yaml::parse($rawContent) ?? [];
-            $tag = (string) ($data['option_general']['tag'] ?? $filename);
+            $tag = (string) ($data['option']['tag'] ?? $filename);
             $checksum = hash('sha256', $rawContent);
 
             $sources[] = new SeedSource(

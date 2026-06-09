@@ -10,18 +10,18 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralRepository;
+use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionRepository;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasParametersTrait;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasTimestampsTrait;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasTranslationsTrait;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasUuidTrait;
 use Symfony\Component\Uid\UuidV7;
 
-#[ORM\Entity(repositoryClass: FormOptionGeneralRepository::class)]
-#[ORM\Table(name: 'form_option_general')]
+#[ORM\Entity(repositoryClass: FormOptionRepository::class)]
+#[ORM\Table(name: 'form_option')]
 #[ORM\HasLifecycleCallbacks]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
-class FormOptionGeneral
+class FormOption
 {
     use HasParametersTrait;
     use HasTimestampsTrait;
@@ -45,7 +45,7 @@ class FormOptionGeneral
         set(string $value) => $this->rawName = trim($value);
     }
 
-    #[ORM\OneToMany(targetEntity: FormOptionGeneralValue::class, mappedBy: 'group', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: FormOptionValue::class, mappedBy: 'group', cascade: ['persist'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
     public private(set) Collection $values;
 
@@ -72,7 +72,7 @@ class FormOptionGeneral
         return $this;
     }
 
-    public function addValue(FormOptionGeneralValue $value): static
+    public function addValue(FormOptionValue $value): static
     {
         if (!$this->values->contains($value)) {
             $this->values->add($value);

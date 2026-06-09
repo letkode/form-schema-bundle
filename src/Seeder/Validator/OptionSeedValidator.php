@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Letkode\FormSchemaBundle\Seeder\Validator;
 
-final class OptionGeneralSeedValidator
+final class OptionSeedValidator
 {
     /**
-     * Validates option general seed data. Returns a list of error messages.
+     * Validates option seed data. Returns a list of error messages.
      *
      * @param array<string, mixed> $data
      *
@@ -17,26 +17,26 @@ final class OptionGeneralSeedValidator
     {
         $errors = [];
 
-        if (!isset($data['option_general']) || !\is_array($data['option_general'])) {
-            return ['Root key "option_general" is missing or not an array'];
+        if (!isset($data['option']) || !\is_array($data['option'])) {
+            return ['Root key "option" is missing or not an array'];
         }
 
-        $option = $data['option_general'];
+        $option = $data['option'];
 
-        $errors = array_merge($errors, $this->validateStringField($option, 'tag', 'option_general', 100));
-        $errors = array_merge($errors, $this->validateStringField($option, 'name', 'option_general'));
+        $errors = array_merge($errors, $this->validateStringField($option, 'tag', 'option', 100));
+        $errors = array_merge($errors, $this->validateStringField($option, 'name', 'option'));
 
         $values = $option['values'] ?? [];
 
         if (!\is_array($values)) {
-            $errors[] = 'option_general.values must be an array';
+            $errors[] = 'option.values must be an array';
 
             return $errors;
         }
 
         foreach ($values as $vi => $value) {
             if (!\is_array($value)) {
-                $errors[] = "option_general.values[{$vi}] must be an array";
+                $errors[] = "option.values[{$vi}] must be an array";
                 continue;
             }
 
@@ -53,7 +53,7 @@ final class OptionGeneralSeedValidator
      */
     private function validateValue(array $value, int $index): array
     {
-        $prefix = "option_general.values[{$index}]";
+        $prefix = "option.values[{$index}]";
         $errors = [];
 
         $errors = array_merge($errors, $this->validateStringField($value, 'tag', $prefix, 100));

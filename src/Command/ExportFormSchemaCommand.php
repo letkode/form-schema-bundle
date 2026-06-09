@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Letkode\FormSchemaBundle\Command;
 
 use Letkode\FormSchemaBundle\Seeder\Exporter\FormYamlExporter;
-use Letkode\FormSchemaBundle\Seeder\Exporter\OptionGeneralYamlExporter;
+use Letkode\FormSchemaBundle\Seeder\Exporter\OptionYamlExporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,13 +16,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'letkode:form-schema:export',
-    description: 'Export a form or option general to YAML',
+    description: 'Export a form or option to YAML',
 )]
 final class ExportFormSchemaCommand extends Command
 {
     public function __construct(
         private readonly FormYamlExporter $formExporter,
-        private readonly OptionGeneralYamlExporter $optionExporter,
+        private readonly OptionYamlExporter $optionExporter,
     ) {
         parent::__construct();
     }
@@ -31,7 +31,7 @@ final class ExportFormSchemaCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('type', InputArgument::REQUIRED, 'Type to export: "form" or "option-general"')
+            ->addArgument('type', InputArgument::REQUIRED, 'Type to export: "form" or "option"')
             ->addArgument('tag', InputArgument::REQUIRED, 'Tag of the element to export')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Write output to this file path instead of stdout');
     }
@@ -44,8 +44,8 @@ final class ExportFormSchemaCommand extends Command
         $tag = (string) $input->getArgument('tag');
         $outputPath = null !== $input->getOption('output') ? (string) $input->getOption('output') : null;
 
-        if (!\in_array($type, ['form', 'option-general'], true)) {
-            $io->error('Invalid type. Use "form" or "option-general".');
+        if (!\in_array($type, ['form', 'option'], true)) {
+            $io->error('Invalid type. Use "form" or "option".');
 
             return Command::FAILURE;
         }

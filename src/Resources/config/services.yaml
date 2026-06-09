@@ -41,10 +41,10 @@ services:
     Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormFieldRepository:
         public: true
 
-    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralRepository:
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionRepository:
         public: true
 
-    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralValueRepository:
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionValueRepository:
         public: true
 
     Letkode\FormSchemaBundle\Domain\Repository\FormRepositoryInterface:
@@ -53,8 +53,8 @@ services:
     Letkode\FormSchemaBundle\Domain\Repository\FormFieldRepositoryInterface:
         alias: Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormFieldRepository
 
-    Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface:
-        alias: Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralRepository
+    Letkode\FormSchemaBundle\Domain\Repository\FormOptionRepositoryInterface:
+        alias: Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionRepository
 
     Letkode\FormSchemaBundle\Infrastructure\Registry\FieldTypeRegistry:
         public: true
@@ -81,7 +81,7 @@ services:
         arguments:
             $seedsPath: '%letkode_form_schema.seeds_path%'
 
-    Letkode\FormSchemaBundle\Seeder\Loader\YamlOptionGeneralSeedLoader:
+    Letkode\FormSchemaBundle\Seeder\Loader\YamlOptionSeedLoader:
         arguments:
             $seedsPath: '%letkode_form_schema.seeds_path%'
 
@@ -89,6 +89,6 @@ services:
         arguments:
             $seeders: !tagged_iterator form_schema.form_seed
 
-    Letkode\FormSchemaBundle\Seeder\Loader\PhpOptionGeneralSeedLoader:
+    Letkode\FormSchemaBundle\Seeder\Loader\PhpOptionSeedLoader:
         arguments:
-            $seeders: !tagged_iterator form_schema.option_general_seed
+            $seeders: !tagged_iterator form_schema.option_seed

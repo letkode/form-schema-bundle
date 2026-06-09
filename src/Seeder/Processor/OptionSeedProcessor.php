@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Letkode\FormSchemaBundle\Seeder\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneral;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
-use Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface;
-use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralValueRepository;
-use Letkode\FormSchemaBundle\Seeder\Validator\OptionGeneralSeedValidator;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOption;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
+use Letkode\FormSchemaBundle\Domain\Repository\FormOptionRepositoryInterface;
+use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionValueRepository;
+use Letkode\FormSchemaBundle\Seeder\Validator\OptionSeedValidator;
 use Letkode\FormSchemaBundle\Seeder\ValueObject\ProcessorResult;
 use Letkode\FormSchemaBundle\Seeder\ValueObject\SeedSource;
 
-final class OptionGeneralSeedProcessor
+final class OptionSeedProcessor
 {
     public function __construct(
-        private readonly FormOptionGeneralRepositoryInterface $optionGeneralRepository,
-        private readonly FormOptionGeneralValueRepository $valueRepository,
+        private readonly FormOptionRepositoryInterface $optionRepository,
+        private readonly FormOptionValueRepository $valueRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly OptionGeneralSeedValidator $validator,
+        private readonly OptionSeedValidator $validator,
     ) {
     }
 
@@ -32,9 +32,9 @@ final class OptionGeneralSeedProcessor
         }
 
         /** @var array<string, mixed> $optionData */
-        $optionData = $source->data['option_general'];
+        $optionData = $source->data['option'];
 
-        $option = $this->optionGeneralRepository->findOneByTag($source->tag);
+        $option = $this->optionRepository->findOneByTag($source->tag);
         $created = null === $option;
 
         if (!$created && !$force && $option->seedChecksum === $source->checksum) {
@@ -43,15 +43,15 @@ final class OptionGeneralSeedProcessor
 
         try {
             if ($created) {
-                $option = $this->createOptionGeneral($optionData);
+                $option = $this->createOption($optionData);
             } else {
-                $this->updateOptionGeneral($option, $optionData);
+                $this->updateOption($option, $optionData);
             }
 
             $this->processValues($option, $optionData['values'] ?? [], $prune);
 
             $option->updateSeedChecksum($source->checksum);
-            $this->optionGeneralRepository->save($option, true);
+            $this->optionRepository->save($option, true);
         } catch (\Throwable $e) {
             return ProcessorResult::error($source->tag, $source->sourceName, [$e->getMessage()]);
         }
@@ -62,19 +62,19 @@ final class OptionGeneralSeedProcessor
     }
 
     /** @param array<string, mixed> $data */
-    private function createOptionGeneral(array $data): FormOptionGeneral
+    private function createOption(array $data): FormOption
     {
-        $option = new FormOptionGeneral();
+        $option = new FormOption();
         $option->name = (string) $data['name'];
         $option->setTag((string) $data['tag']);
 
-        $this->optionGeneralRepository->save($option);
+        $this->optionRepository->save($option);
 
         return $option;
     }
 
     /** @param array<string, mixed> $data */
-    private function updateOptionGeneral(FormOptionGeneral $option, array $data): void
+    private function updateOption(FormOption $option, array $data): void
     {
         $option->name = (string) $data['name'];
     }
@@ -82,7 +82,7 @@ final class OptionGeneralSeedProcessor
     /**
      * @param list<array<string, mixed>> $valuesData
      */
-    private function processValues(FormOptionGeneral $option, array $valuesData, bool $prune): void
+    private function processValues(FormOption $option, array $valuesData, bool $prune): void
     {
         $processedTags = [];
 
@@ -111,9 +111,9 @@ final class OptionGeneralSeedProcessor
     }
 
     /** @param array<string, mixed> $data */
-    private function createValue(array $data, FormOptionGeneral $option): FormOptionGeneralValue
+    private function createValue(array $data, FormOption $option): FormOptionValue
     {
-        $value = new FormOptionGeneralValue();
+        $value = new FormOptionValue();
         $value->label = (string) $data['label'];
         $value->description = isset($data['description']) ? (string) $data['description'] : null;
         $value->position = (int) ($data['position'] ?? 0);
@@ -126,7 +126,7 @@ final class OptionGeneralSeedProcessor
     }
 
     /** @param array<string, mixed> $data */
-    private function updateValue(FormOptionGeneralValue $value, array $data): void
+    private function updateValue(FormOptionValue $value, array $data): void
     {
         $value->label = (string) $data['label'];
         $value->description = isset($data['description']) ? (string) $data['description'] : null;

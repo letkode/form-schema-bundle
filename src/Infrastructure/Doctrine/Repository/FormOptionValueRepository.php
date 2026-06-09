@@ -6,19 +6,19 @@ namespace Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
 
 /**
- * @extends ServiceEntityRepository<FormOptionGeneralValue>
+ * @extends ServiceEntityRepository<FormOptionValue>
  */
-final class FormOptionGeneralValueRepository extends ServiceEntityRepository
+final class FormOptionValueRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FormOptionGeneralValue::class);
+        parent::__construct($registry, FormOptionValue::class);
     }
 
-    public function save(FormOptionGeneralValue $value, bool $flush = false): void
+    public function save(FormOptionValue $value, bool $flush = false): void
     {
         $this->getEntityManager()->persist($value);
         if ($flush) {
@@ -26,7 +26,7 @@ final class FormOptionGeneralValueRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(FormOptionGeneralValue $value, bool $flush = false): void
+    public function remove(FormOptionValue $value, bool $flush = false): void
     {
         $this->getEntityManager()->remove($value);
         if ($flush) {

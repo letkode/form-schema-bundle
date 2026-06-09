@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Letkode\FormSchemaBundle\Command;
 
-use Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface;
+use Letkode\FormSchemaBundle\Domain\Repository\FormOptionRepositoryInterface;
 use Letkode\FormSchemaBundle\Domain\Repository\FormRepositoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -15,13 +15,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'letkode:form-schema:remove',
-    description: 'Soft-delete a form or option general by type and tag',
+    description: 'Soft-delete a form or option by type and tag',
 )]
 final class RemoveFormSchemaCommand extends Command
 {
     public function __construct(
         private readonly FormRepositoryInterface $formRepository,
-        private readonly FormOptionGeneralRepositoryInterface $optionGeneralRepository,
+        private readonly FormOptionRepositoryInterface $optionRepository,
     ) {
         parent::__construct();
     }
@@ -30,7 +30,7 @@ final class RemoveFormSchemaCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('type', InputArgument::REQUIRED, 'Type to remove: "form" or "option-general"')
+            ->addArgument('type', InputArgument::REQUIRED, 'Type to remove: "form" or "option"')
             ->addArgument('tag', InputArgument::REQUIRED, 'Tag of the element to remove');
     }
 
@@ -41,8 +41,8 @@ final class RemoveFormSchemaCommand extends Command
         $type = (string) $input->getArgument('type');
         $tag = (string) $input->getArgument('tag');
 
-        if (!\in_array($type, ['form', 'option-general'], true)) {
-            $io->error('Invalid type. Use "form" or "option-general".');
+        if (!\in_array($type, ['form', 'option'], true)) {
+            $io->error('Invalid type. Use "form" or "option".');
 
             return Command::FAILURE;
         }
@@ -62,7 +62,7 @@ final class RemoveFormSchemaCommand extends Command
             return $this->removeForm($tag, $io);
         }
 
-        return $this->removeOptionGeneral($tag, $io);
+        return $this->removeOption($tag, $io);
     }
 
     private function removeForm(string $tag, SymfonyStyle $io): int
@@ -81,18 +81,18 @@ final class RemoveFormSchemaCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function removeOptionGeneral(string $tag, SymfonyStyle $io): int
+    private function removeOption(string $tag, SymfonyStyle $io): int
     {
-        $option = $this->optionGeneralRepository->findOneByTag($tag);
+        $option = $this->optionRepository->findOneByTag($tag);
 
         if (null === $option) {
-            $io->error(\sprintf('Option general with tag "%s" not found.', $tag));
+            $io->error(\sprintf('Option with tag "%s" not found.', $tag));
 
             return Command::FAILURE;
         }
 
-        $this->optionGeneralRepository->remove($option, true);
-        $io->success(\sprintf('Option general "%s" has been removed.', $tag));
+        $this->optionRepository->remove($option, true);
+        $io->success(\sprintf('Option "%s" has been removed.', $tag));
 
         return Command::SUCCESS;
     }

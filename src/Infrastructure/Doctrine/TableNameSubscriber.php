@@ -8,8 +8,8 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Letkode\FormSchemaBundle\Domain\Entity\Form;
 use Letkode\FormSchemaBundle\Domain\Entity\FormField;
 use Letkode\FormSchemaBundle\Domain\Entity\FormGroup;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneral;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOption;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
 use Letkode\FormSchemaBundle\Domain\Entity\FormSection;
 
 final class TableNameSubscriber
@@ -20,8 +20,8 @@ final class TableNameSubscriber
         FormSection::class => 'form_section',
         FormGroup::class => 'form_group',
         FormField::class => 'form_field',
-        FormOptionGeneral::class => 'form_option_general',
-        FormOptionGeneralValue::class => 'form_option_general_value',
+        FormOption::class => 'form_option',
+        FormOptionValue::class => 'form_option_value',
     ];
 
     /** @var array<class-string, string> */

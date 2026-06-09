@@ -8,19 +8,19 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralValueRepository;
+use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionValueRepository;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasParametersTrait;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasTimestampsTrait;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasTranslationsTrait;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\Trait\HasUuidTrait;
 use Symfony\Component\Uid\UuidV7;
 
-#[ORM\Entity(repositoryClass: FormOptionGeneralValueRepository::class)]
-#[ORM\Table(name: 'form_option_general_value')]
-#[ORM\UniqueConstraint(name: 'uniq_form_option_general_value_tag', columns: ['group_id', 'tag'])]
+#[ORM\Entity(repositoryClass: FormOptionValueRepository::class)]
+#[ORM\Table(name: 'form_option_value')]
+#[ORM\UniqueConstraint(name: 'uniq_form_option_value_tag', columns: ['group_id', 'tag'])]
 #[ORM\HasLifecycleCallbacks]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
-class FormOptionGeneralValue
+class FormOptionValue
 {
     use HasParametersTrait;
     use HasTimestampsTrait;
@@ -58,9 +58,9 @@ class FormOptionGeneralValue
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
     public bool $enabled = true;
 
-    #[ORM\ManyToOne(targetEntity: FormOptionGeneral::class, inversedBy: 'values')]
+    #[ORM\ManyToOne(targetEntity: FormOption::class, inversedBy: 'values')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    public private(set) FormOptionGeneral|null $group = null;
+    public private(set) FormOption|null $group = null;
 
     public function __construct()
     {
@@ -74,7 +74,7 @@ class FormOptionGeneralValue
         return $this;
     }
 
-    public function setGroup(FormOptionGeneral $group): static
+    public function setGroup(FormOption $group): static
     {
         $this->group = $group;
 

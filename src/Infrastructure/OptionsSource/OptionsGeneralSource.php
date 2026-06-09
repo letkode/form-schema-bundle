@@ -7,14 +7,14 @@ namespace Letkode\FormSchemaBundle\Infrastructure\OptionsSource;
 use Letkode\FormSchemaBundle\Application\DTO\OptionDTO;
 use Letkode\FormSchemaBundle\Attribute\AsOptionsSource;
 use Letkode\FormSchemaBundle\Domain\Contract\OptionsSourceInterface;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
-use Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
+use Letkode\FormSchemaBundle\Domain\Repository\FormOptionRepositoryInterface;
 
 #[AsOptionsSource]
 final class OptionsGeneralSource implements OptionsSourceInterface
 {
     public function __construct(
-        private readonly FormOptionGeneralRepositoryInterface $repository,
+        private readonly FormOptionRepositoryInterface $repository,
     ) {
     }
 
@@ -52,7 +52,7 @@ final class OptionsGeneralSource implements OptionsSourceInterface
             );
         }
 
-        /** @var FormOptionGeneralValue $value */
+        /** @var FormOptionValue $value */
         foreach ($optionGroup->values as $value) {
             if (!$value->enabled) {
                 continue;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Letkode\FormSchemaBundle\Seeder\Contract;
 
-interface OptionGeneralSeederInterface
+interface OptionSeederInterface
 {
     /** @return array<string, mixed> */
-    public function getOptionGeneralData(): array;
+    public function getOptionData(): array;
 }

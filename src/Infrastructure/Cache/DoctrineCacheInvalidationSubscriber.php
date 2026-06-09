@@ -11,8 +11,8 @@ use Doctrine\ORM\Events;
 use Letkode\FormSchemaBundle\Domain\Entity\Form;
 use Letkode\FormSchemaBundle\Domain\Entity\FormField;
 use Letkode\FormSchemaBundle\Domain\Entity\FormGroup;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneral;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOption;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
 use Letkode\FormSchemaBundle\Domain\Entity\FormSection;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
@@ -26,8 +26,8 @@ final class DoctrineCacheInvalidationSubscriber
         FormSection::class,
         FormGroup::class,
         FormField::class,
-        FormOptionGeneral::class,
-        FormOptionGeneralValue::class,
+        FormOption::class,
+        FormOptionValue::class,
     ];
 
     public function __construct(
@@ -69,8 +69,8 @@ final class DoctrineCacheInvalidationSubscriber
             $entity instanceof FormSection => $entity->form?->tag,
             $entity instanceof FormGroup => $entity->section?->form?->tag,
             $entity instanceof FormField => $entity->group?->section?->form?->tag,
-            $entity instanceof FormOptionGeneral => $entity->tag,
-            $entity instanceof FormOptionGeneralValue => $entity->group?->tag,
+            $entity instanceof FormOption => $entity->tag,
+            $entity instanceof FormOptionValue => $entity->group?->tag,
             default => null,
         };
     }

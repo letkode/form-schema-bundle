@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Letkode\FormSchemaBundle\Tests\Unit\Seeder\Validator;
 
-use Letkode\FormSchemaBundle\Seeder\Validator\OptionGeneralSeedValidator;
+use Letkode\FormSchemaBundle\Seeder\Validator\OptionSeedValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-final class OptionGeneralSeedValidatorTest extends TestCase
+final class OptionSeedValidatorTest extends TestCase
 {
-    private OptionGeneralSeedValidator $validator;
+    private OptionSeedValidator $validator;
 
     protected function setUp(): void
     {
-        $this->validator = new OptionGeneralSeedValidator();
+        $this->validator = new OptionSeedValidator();
     }
 
     #[Test]
@@ -30,26 +30,26 @@ final class OptionGeneralSeedValidatorTest extends TestCase
     {
         $errors = $this->validator->validate([]);
 
-        self::assertContains('Root key "option_general" is missing or not an array', $errors);
+        self::assertContains('Root key "option" is missing or not an array', $errors);
     }
 
     #[Test]
     public function testMissingTagReturnsError(): void
     {
         $data = $this->validData();
-        unset($data['option_general']['tag']);
+        unset($data['option']['tag']);
 
         $errors = $this->validator->validate($data);
 
         self::assertNotEmpty($errors);
-        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'option_general.tag')));
+        self::assertTrue(array_any($errors, static fn (string $e) => str_contains($e, 'option.tag')));
     }
 
     #[Test]
     public function testMissingValueLabelReturnsError(): void
     {
         $data = $this->validData();
-        unset($data['option_general']['values'][0]['label']);
+        unset($data['option']['values'][0]['label']);
 
         $errors = $this->validator->validate($data);
 
@@ -61,7 +61,7 @@ final class OptionGeneralSeedValidatorTest extends TestCase
     public function testInvalidValuePositionReturnsError(): void
     {
         $data = $this->validData();
-        $data['option_general']['values'][0]['position'] = -5;
+        $data['option']['values'][0]['position'] = -5;
 
         $errors = $this->validator->validate($data);
 
@@ -73,7 +73,7 @@ final class OptionGeneralSeedValidatorTest extends TestCase
     private function validData(): array
     {
         return [
-            'option_general' => [
+            'option' => [
                 'tag' => 'countries',
                 'name' => 'Countries',
                 'values' => [

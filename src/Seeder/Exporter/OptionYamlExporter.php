@@ -4,39 +4,39 @@ declare(strict_types=1);
 
 namespace Letkode\FormSchemaBundle\Seeder\Exporter;
 
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneral;
-use Letkode\FormSchemaBundle\Domain\Entity\FormOptionGeneralValue;
-use Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOption;
+use Letkode\FormSchemaBundle\Domain\Entity\FormOptionValue;
+use Letkode\FormSchemaBundle\Domain\Repository\FormOptionRepositoryInterface;
 use Symfony\Component\Yaml\Yaml;
 
-final class OptionGeneralYamlExporter
+final class OptionYamlExporter
 {
     public function __construct(
-        private readonly FormOptionGeneralRepositoryInterface $optionGeneralRepository,
+        private readonly FormOptionRepositoryInterface $optionRepository,
     ) {
     }
 
     public function export(string $tag): string
     {
-        $option = $this->optionGeneralRepository->findOneByTag($tag);
+        $option = $this->optionRepository->findOneByTag($tag);
 
         if (null === $option) {
-            throw new \InvalidArgumentException("Option general with tag \"{$tag}\" not found.");
+            throw new \InvalidArgumentException("Option with tag \"{$tag}\" not found.");
         }
 
         return Yaml::dump($this->optionToArray($option), inline: 4, indent: 2);
     }
 
     /** @return array<string, mixed> */
-    private function optionToArray(FormOptionGeneral $option): array
+    private function optionToArray(FormOption $option): array
     {
         return [
-            'option_general' => [
+            'option' => [
                 'tag' => $option->tag,
                 'name' => $option->name,
                 'values' => array_values(
                     array_map(
-                        fn (FormOptionGeneralValue $v) => $this->valueToArray($v),
+                        fn (FormOptionValue $v) => $this->valueToArray($v),
                         $option->values->toArray(),
                     ),
                 ),
@@ -45,7 +45,7 @@ final class OptionGeneralYamlExporter
     }
 
     /** @return array<string, mixed> */
-    private function valueToArray(FormOptionGeneralValue $value): array
+    private function valueToArray(FormOptionValue $value): array
     {
         return [
             'tag' => $value->tag,
