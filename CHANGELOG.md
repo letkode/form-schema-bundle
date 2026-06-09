@@ -6,7 +6,13 @@
 
 - **Symfony 8.x compatibility** — ampliar constraints de `symfony/*` a `^7.0 || ^8.0`
 - **Sistema de seeders** — mecanismo declarativo para poblar y mantener schemas de formularios desde archivos versionados (ver [docs/seeders.md](docs/seeders.md)):
-  - Dos formatos de fuente: archivos YAML (`config/seeds/form_schema/`) y clases PHP (`implements FormSeederInterface` / `OptionSeederInterface`)
+  - Dos formatos de fuente: archivos YAML y clases PHP (`implements FormSeederInterface` / `OptionSeederInterface`)
+  - Estructura de directorios scaffoldeada por Symfony Flex en el proyecto consumidor:
+    ```
+    config/seeds/form_schema/
+        forms/       ← YAMLs de formularios
+        options/     ← YAMLs de catálogos de opciones
+    ```
   - Tracking automático por checksum sha256 en columna `seed_checksum` — los seeds sin cambios se saltan automáticamente
   - Cuatro comandos de consola:
     - `letkode:form-schema:seed` — siembra formularios (`--seed`, `--prune`, `--force`)
@@ -26,11 +32,12 @@
 - **Config `table_names`**: claves `form_option_general` y `form_option_general_value` → `form_option` y `form_option_value`
 - **`OptionGeneralSeederInterface`** eliminada; reemplazada por `OptionSeederInterface` con método `getOptionData()` (antes `getOptionGeneralData()`)
 - **YAML seed key**: la clave raíz de los archivos de opciones cambia de `option_general:` a `option:`
+- **Directorio de seeds de opciones**: `general_options/` → `options/` (coherente con el renombrado de la entidad)
 
 ### Fixed
 
-- Recipe Symfony Flex: notación en underscore obligatoria en nombres de directorio bajo `config/`
-- Recipe Symfony Flex: directorios de seeds eliminados de `copy-from-recipe` (no permitido por el validador Flex)
+- Recipe: directorio de seeds de opciones renombrado de `general-options/` a `options/` (notación underscore y nombre alineado con la entidad)
+- Recipe: scaffold de `config/seeds/` vía `copy-from-recipe` usando `config/` como raíz
 - Recipe: reemplazados `.gitkeep` por `.gitignore` en directorios de seeds
 
 ### Migration guide
