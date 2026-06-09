@@ -17,7 +17,7 @@ final class YamlOptionSeedLoader implements SeedLoaderInterface
     /** @return list<SeedSource> */
     public function load(string|null $filter = null): array
     {
-        $dir = rtrim($this->seedsPath, '/') . '/general_options';
+        $dir = rtrim($this->seedsPath, '/') . '/options';
 
         if (!is_dir($dir)) {
             return [];

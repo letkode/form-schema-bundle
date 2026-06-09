@@ -33,7 +33,7 @@ letkode_form_schema:
 
     # ── Seeders ─────────────────────────────────────────────────────────────
     # Ruta raíz donde el sistema busca archivos YAML de seeds.
-    # Subdirectorios esperados: forms/ y general_options/
+    # Subdirectorios esperados: forms/ y options/
     seeds_path: '%kernel.project_dir%/config/seeds/form_schema'   # default
 
     # ── Caché PSR-6 ─────────────────────────────────────────────────────────

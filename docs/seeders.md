@@ -10,7 +10,7 @@ El sistema de seeders permite crear y mantener formularios y catálogos de opcio
 config/seeds/form_schema/
     forms/               ← un archivo YAML por formulario
         contact.yaml
-    general_options/     ← un archivo YAML por catálogo de opciones
+    options/     ← un archivo YAML por catálogo de opciones
         countries.yaml
 ```
 
@@ -70,7 +70,7 @@ Campos obligatorios: `tag` (único por formulario), `name`. El `tag` es el ident
 ## Formato YAML — catálogos de opciones
 
 ```yaml
-# config/seeds/form_schema/general_options/countries.yaml
+# config/seeds/form_schema/options/countries.yaml
 option:
   tag: countries
   name: Países
@@ -245,7 +245,7 @@ php bin/console letkode:form-schema:export form contact
 php bin/console letkode:form-schema:export form contact --output=config/seeds/form_schema/forms/contact.yaml
 
 # Exportar un catálogo de opciones
-php bin/console letkode:form-schema:export option countries --output=config/seeds/form_schema/general_options/countries.yaml
+php bin/console letkode:form-schema:export option countries --output=config/seeds/form_schema/options/countries.yaml
 ```
 
 ---
