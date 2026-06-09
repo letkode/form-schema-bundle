@@ -11,6 +11,8 @@ use Letkode\FormSchemaBundle\Domain\Contract\GroupRenderInterface;
 use Letkode\FormSchemaBundle\Domain\Contract\InteractionHandlerInterface;
 use Letkode\FormSchemaBundle\Domain\Contract\OptionsSourceInterface;
 use Letkode\FormSchemaBundle\Domain\Contract\SectionRenderInterface;
+use Letkode\FormSchemaBundle\Seeder\Contract\FormSeederInterface;
+use Letkode\FormSchemaBundle\Seeder\Contract\OptionGeneralSeederInterface;
 use Letkode\FormSchemaBundle\Infrastructure\Cache\CachedFormSchemaResolver;
 use Letkode\FormSchemaBundle\Infrastructure\Cache\DoctrineCacheInvalidationSubscriber;
 use Letkode\FormSchemaBundle\Infrastructure\Doctrine\TableNameSubscriber;
@@ -62,6 +64,7 @@ class LetkodeFormSchemaBundle extends AbstractBundle
                 ->arrayNode('disabled_form_renders')->scalarPrototype()->end()->defaultValue([])->end()
                 ->arrayNode('disabled_section_renders')->scalarPrototype()->end()->defaultValue([])->end()
                 ->arrayNode('disabled_group_renders')->scalarPrototype()->end()->defaultValue([])->end()
+                ->scalarNode('seeds_path')->defaultValue('%kernel.project_dir%/config/seeds/form-schema')->end()
             ->end()
         ;
     }
@@ -86,6 +89,7 @@ class LetkodeFormSchemaBundle extends AbstractBundle
         $builder->setParameter('letkode_form_schema.disabled_form_renders', $config['disabled_form_renders']);
         $builder->setParameter('letkode_form_schema.disabled_section_renders', $config['disabled_section_renders']);
         $builder->setParameter('letkode_form_schema.disabled_group_renders', $config['disabled_group_renders']);
+        $builder->setParameter('letkode_form_schema.seeds_path', $config['seeds_path']);
 
         $container->services()
             ->set(TableNameSubscriber::class)
@@ -147,5 +151,11 @@ class LetkodeFormSchemaBundle extends AbstractBundle
 
         $container->registerForAutoconfiguration(InteractionHandlerInterface::class)
             ->addTag('form_schema.interaction_handler');
+
+        $container->registerForAutoconfiguration(FormSeederInterface::class)
+            ->addTag('form_schema.form_seed');
+
+        $container->registerForAutoconfiguration(OptionGeneralSeederInterface::class)
+            ->addTag('form_schema.option_general_seed');
     }
 }

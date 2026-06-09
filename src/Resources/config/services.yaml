@@ -15,6 +15,10 @@ services:
             - '../../Application/Filter/'
             - '../../Attribute/'
             - '../../Infrastructure/Cache/'
+            - '../../Seeder/Contract/'
+            - '../../Seeder/Enum/'
+            - '../../Seeder/Exception/'
+            - '../../Seeder/ValueObject/'
 
     Letkode\FormSchemaBundle\Application\Resolver\FormSchemaResolver:
         arguments:
@@ -72,3 +76,19 @@ services:
 
     Letkode\FormSchemaBundle\Infrastructure\OptionsSource\OptionsEntitySource:
         public: true
+
+    Letkode\FormSchemaBundle\Seeder\Loader\YamlFormSeedLoader:
+        arguments:
+            $seedsPath: '%letkode_form_schema.seeds_path%'
+
+    Letkode\FormSchemaBundle\Seeder\Loader\YamlOptionGeneralSeedLoader:
+        arguments:
+            $seedsPath: '%letkode_form_schema.seeds_path%'
+
+    Letkode\FormSchemaBundle\Seeder\Loader\PhpFormSeedLoader:
+        arguments:
+            $seeders: !tagged_iterator form_schema.form_seed
+
+    Letkode\FormSchemaBundle\Seeder\Loader\PhpOptionGeneralSeedLoader:
+        arguments:
+            $seeders: !tagged_iterator form_schema.option_general_seed

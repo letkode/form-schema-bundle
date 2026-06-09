@@ -49,6 +49,9 @@ class FormOptionGeneral
     #[ORM\OrderBy(['position' => 'ASC'])]
     public private(set) Collection $values;
 
+    #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
+    public private(set) string|null $seedChecksum = null;
+
     public function __construct()
     {
         $this->uuid = new UuidV7();
@@ -58,6 +61,13 @@ class FormOptionGeneral
     public function setTag(string $tag): static
     {
         $this->tag = $tag;
+
+        return $this;
+    }
+
+    public function updateSeedChecksum(string $checksum): static
+    {
+        $this->seedChecksum = $checksum;
 
         return $this;
     }

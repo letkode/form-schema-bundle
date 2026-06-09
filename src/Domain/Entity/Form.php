@@ -61,6 +61,9 @@ class Form
     #[ORM\OrderBy(['position' => 'ASC'])]
     public private(set) Collection $sections;
 
+    #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
+    public private(set) string|null $seedChecksum = null;
+
     private string|null $activeLocale = null;
 
     public function __construct()
@@ -82,6 +85,13 @@ class Form
         foreach ($this->sections as $section) {
             $section->withActiveLocale($locale);
         }
+
+        return $this;
+    }
+
+    public function updateSeedChecksum(string $checksum): static
+    {
+        $this->seedChecksum = $checksum;
 
         return $this;
     }
