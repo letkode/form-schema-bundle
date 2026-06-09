@@ -1,0 +1,74 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Letkode\FormSchemaBundle\:
+        resource: '../../'
+        exclude:
+            - '../../Domain/Entity/'
+            - '../../Domain/Enum/'
+            - '../../Domain/ValueObject/'
+            - '../../Domain/Exception/'
+            - '../../Application/DTO/'
+            - '../../Application/Filter/'
+            - '../../Attribute/'
+            - '../../Infrastructure/Cache/'
+
+    Letkode\FormSchemaBundle\Application\Resolver\FormSchemaResolver:
+        arguments:
+            $defaultLocale: '%letkode_form_schema.default_locale%'
+        public: true
+
+    Letkode\FormSchemaBundle\Domain\Contract\FormSchemaResolverInterface:
+        alias: Letkode\FormSchemaBundle\Application\Resolver\FormSchemaResolver
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormRepository:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormSectionRepository:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormGroupRepository:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormFieldRepository:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralRepository:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralValueRepository:
+        public: true
+
+    Letkode\FormSchemaBundle\Domain\Repository\FormRepositoryInterface:
+        alias: Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormRepository
+
+    Letkode\FormSchemaBundle\Domain\Repository\FormFieldRepositoryInterface:
+        alias: Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormFieldRepository
+
+    Letkode\FormSchemaBundle\Domain\Repository\FormOptionGeneralRepositoryInterface:
+        alias: Letkode\FormSchemaBundle\Infrastructure\Doctrine\Repository\FormOptionGeneralRepository
+
+    Letkode\FormSchemaBundle\Infrastructure\Registry\FieldTypeRegistry:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Registry\OptionsSourceRegistry:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Registry\FormRenderRegistry:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Registry\SectionRenderRegistry:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\Registry\GroupRenderRegistry:
+        public: true
+
+    Letkode\FormSchemaBundle\Application\Resolver\OptionsResolver:
+        public: true
+
+    Letkode\FormSchemaBundle\Infrastructure\OptionsSource\OptionsEntitySource:
+        public: true
