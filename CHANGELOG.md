@@ -4,10 +4,10 @@
 
 ### Changed
 
-- Recipe: variables de entorno `LKA_*` para configuración de locale y caché
+- Recipe: variables de entorno `LKA_*` inyectadas en el `.env` del proyecto al instalar el bundle vía Symfony Flex
   - `LKA_DEFAULT_LOCALE` (default `es`) — locale por defecto del bundle
-  - `LKA_AVAILABLE_LOCALES` (default `es,en,pt`) — locales disponibles en formato CSV
   - `LKA_FORM_SCHEMA_CACHE` (default `false`) — activa/desactiva la caché PSR-6; en producción setear a `true`
+- Recipe: `available_locales` queda como lista estática en el YAML (los nodos array no soportan env vars en Symfony Config)
 
 ---
 
