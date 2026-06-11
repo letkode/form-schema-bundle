@@ -15,9 +15,13 @@ final class CachedFormSchemaResolver implements FormSchemaResolverInterface
     private string|null $tag = null;
     private string|null $locale = null;
     private string|null $context = null;
+    /** @var array<string> */
     private array $includeSections = [];
+    /** @var array<string> */
     private array $excludeSections = [];
+    /** @var array<string> */
     private array $includeGroups = [];
+    /** @var array<string> */
     private array $excludeGroups = [];
 
     public function __construct(
@@ -58,6 +62,9 @@ final class CachedFormSchemaResolver implements FormSchemaResolverInterface
         return $clone;
     }
 
+    /**
+     * @param array<string> $tags
+     */
     #[\Override]
     public function includingSections(array $tags): static
     {
@@ -68,6 +75,9 @@ final class CachedFormSchemaResolver implements FormSchemaResolverInterface
         return $clone;
     }
 
+    /**
+     * @param array<string> $tags
+     */
     #[\Override]
     public function excludingSections(array $tags): static
     {
@@ -78,6 +88,9 @@ final class CachedFormSchemaResolver implements FormSchemaResolverInterface
         return $clone;
     }
 
+    /**
+     * @param array<string> $tags
+     */
     #[\Override]
     public function includingGroups(array $tags): static
     {
@@ -88,6 +101,9 @@ final class CachedFormSchemaResolver implements FormSchemaResolverInterface
         return $clone;
     }
 
+    /**
+     * @param array<string> $tags
+     */
     #[\Override]
     public function excludingGroups(array $tags): static
     {
@@ -120,6 +136,7 @@ final class CachedFormSchemaResolver implements FormSchemaResolverInterface
         return $dto;
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function toArray(): array
     {

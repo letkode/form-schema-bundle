@@ -125,7 +125,7 @@ final class FormSeedProcessor
 
         if ($prune) {
             $this->pruneChildren(
-                $this->sectionRepository->findBy(['form' => $form]),
+                array_values($this->sectionRepository->findBy(['form' => $form])),
                 $processedTags,
                 fn (FormSection $s) => $this->sectionRepository->remove($s),
                 static fn (FormSection $s) => $s->tag,
@@ -193,7 +193,7 @@ final class FormSeedProcessor
 
         if ($prune) {
             $this->pruneChildren(
-                $this->groupRepository->findBy(['section' => $section]),
+                array_values($this->groupRepository->findBy(['section' => $section])),
                 $processedTags,
                 fn (FormGroup $g) => $this->groupRepository->remove($g),
                 static fn (FormGroup $g) => $g->tag,
@@ -259,7 +259,7 @@ final class FormSeedProcessor
 
         if ($prune) {
             $this->pruneChildren(
-                $this->fieldRepository->findBy(['group' => $group]),
+                array_values($this->fieldRepository->findBy(['group' => $group])),
                 $processedTags,
                 fn (FormField $f) => $this->fieldRepository->remove($f),
                 static fn (FormField $f) => $f->tag,

@@ -12,6 +12,7 @@ final readonly class FilterRule
     ) {
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -20,6 +21,7 @@ final readonly class FilterRule
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

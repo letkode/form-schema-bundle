@@ -14,15 +14,20 @@ interface FormSchemaResolverInterface
 
     public function withContext(string $action): static;
 
+    /** @param array<string> $tags */
     public function includingSections(array $tags): static;
 
+    /** @param array<string> $tags */
     public function excludingSections(array $tags): static;
 
+    /** @param array<string> $tags */
     public function includingGroups(array $tags): static;
 
+    /** @param array<string> $tags */
     public function excludingGroups(array $tags): static;
 
     public function resolve(): FormDTO;
 
+    /** @return array<string, mixed> */
     public function toArray(): array;
 }

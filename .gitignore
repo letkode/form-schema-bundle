@@ -1,6 +1,7 @@
 /vendor
 /.claude
 /coverage
+/var
 /composer.lock
 /.phpunit.result.cache
 /.php-cs-fixer.cache

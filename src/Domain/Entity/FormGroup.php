@@ -43,10 +43,10 @@ class FormGroup
 
     public string $name {
         get {
-            $locale = $this->activeLocale ?? $this->section?->form?->defaultLang ?? 'es';
+            $locale = $this->activeLocale ?? $this->section?->form->defaultLang ?? 'es';
 
             return $this->getTranslation($locale, 'name')
-                ?? $this->getTranslation($this->section?->form?->defaultLang ?? 'es', 'name')
+                ?? $this->getTranslation($this->section?->form->defaultLang ?? 'es', 'name')
                 ?? $this->rawName;
         }
         set(string $value) => $this->rawName = trim($value);
@@ -57,10 +57,10 @@ class FormGroup
 
     public string|null $description {
         get {
-            $locale = $this->activeLocale ?? $this->section?->form?->defaultLang ?? 'es';
+            $locale = $this->activeLocale ?? $this->section?->form->defaultLang ?? 'es';
 
             return $this->getTranslation($locale, 'description')
-                ?? $this->getTranslation($this->section?->form?->defaultLang ?? 'es', 'description')
+                ?? $this->getTranslation($this->section?->form->defaultLang ?? 'es', 'description')
                 ?? $this->rawDescription;
         }
         set(?string $value) => $this->rawDescription = null !== $value ? trim($value) : null;
@@ -76,6 +76,7 @@ class FormGroup
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     public private(set) FormSection|null $section = null;
 
+    /** @var Collection<int, FormField> */
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: FormField::class, cascade: ['persist'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
     public private(set) Collection $fields;

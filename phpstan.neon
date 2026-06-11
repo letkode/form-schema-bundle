@@ -1,5 +1,6 @@
 parameters:
     level: 8
+    tmpDir: var/phpstan
     paths:
         - src
         - tests
@@ -9,10 +10,12 @@ parameters:
         containerXmlPath: null
     doctrine:
         objectManagerLoader: null
-    ignoreErrors:
-        # Property hooks con backing field — PHPStan aún no los soporta completamente
-        - '#Property .+ has no default value#'
     treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - identifier: propertyGetHook.noRead
+        -
+            identifier: property.onlyWritten
+            path: src/Application/Resolver/FormSchemaResolver.php
 
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon

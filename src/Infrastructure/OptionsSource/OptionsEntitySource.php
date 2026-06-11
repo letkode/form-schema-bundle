@@ -39,6 +39,7 @@ final class OptionsEntitySource implements OptionsSourceInterface
 
         $this->guardMethodAllowed($entityClass, $method);
 
+        /** @phpstan-ignore argument.templateType */
         $repository = $this->entityManager->getRepository($entityClass);
         $context = $parameters['context'] ?? [];
 

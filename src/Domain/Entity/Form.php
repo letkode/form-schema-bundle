@@ -57,6 +57,7 @@ class Form
     #[ORM\Column(type: Types::STRING, length: 5, options: ['default' => 'es'])]
     public string $defaultLang = 'es';
 
+    /** @var Collection<int, FormSection> */
     #[ORM\OneToMany(mappedBy: 'form', targetEntity: FormSection::class, cascade: ['persist'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
     public private(set) Collection $sections;

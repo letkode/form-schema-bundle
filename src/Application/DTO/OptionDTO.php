@@ -6,6 +6,9 @@ namespace Letkode\FormSchemaBundle\Application\DTO;
 
 final readonly class OptionDTO implements \JsonSerializable
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         public string|int $value,
         public string $label,
@@ -17,6 +20,7 @@ final readonly class OptionDTO implements \JsonSerializable
     ) {
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function jsonSerialize(): array
     {

@@ -13,6 +13,11 @@ final readonly class StructureFilter
     {
     }
 
+    /**
+     * @param iterable<int, FormSection> $sections
+     *
+     * @return list<FormSection>
+     */
     public function filterSections(iterable $sections): array
     {
         $result = [];
@@ -25,6 +30,11 @@ final readonly class StructureFilter
         return $result;
     }
 
+    /**
+     * @param iterable<int, FormGroup> $groups
+     *
+     * @return list<FormGroup>
+     */
     public function filterGroups(iterable $groups): array
     {
         $result = [];

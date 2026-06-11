@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasParametersTrait
 {
+    /** @var array<string, mixed> */
     #[ORM\Column(type: Types::JSON)]
     public array $parameters = [];
 

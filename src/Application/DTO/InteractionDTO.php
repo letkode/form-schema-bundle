@@ -8,6 +8,11 @@ use Letkode\FormSchemaBundle\Domain\ValueObject\FieldInteraction;
 
 final readonly class InteractionDTO implements \JsonSerializable
 {
+    /**
+     * @param string|array<mixed>|null $target
+     * @param array<string, mixed>     $condition
+     * @param array<string, mixed>     $params
+     */
     public function __construct(
         public string $trigger,
         public string $action,
@@ -17,6 +22,9 @@ final readonly class InteractionDTO implements \JsonSerializable
     ) {
     }
 
+    /**
+     * @param array<string, mixed>|null $mergedParams
+     */
     public static function fromInteraction(FieldInteraction $interaction, array|null $mergedParams = null): self
     {
         return new self(
@@ -28,6 +36,7 @@ final readonly class InteractionDTO implements \JsonSerializable
         );
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function jsonSerialize(): array
     {

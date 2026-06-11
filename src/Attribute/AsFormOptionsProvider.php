@@ -10,8 +10,11 @@ final readonly class AsFormOptionsProvider
     /** @var list<string> */
     public array $methods;
 
+    /**
+     * @param string|array<string> $method
+     */
     public function __construct(string|array $method = 'findForFormOptions')
     {
-        $this->methods = (array) $method;
+        $this->methods = array_values((array) $method);
     }
 }

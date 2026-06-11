@@ -45,6 +45,7 @@ class FormOption
         set(string $value) => $this->rawName = trim($value);
     }
 
+    /** @var Collection<int, FormOptionValue> */
     #[ORM\OneToMany(targetEntity: FormOptionValue::class, mappedBy: 'group', cascade: ['persist'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
     public private(set) Collection $values;

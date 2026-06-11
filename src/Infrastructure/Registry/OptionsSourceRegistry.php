@@ -14,6 +14,9 @@ final class OptionsSourceRegistry implements OptionsSourceRegistryInterface
     /** @var array<string, OptionsSourceInterface> */
     private array $sources = [];
 
+    /**
+     * @param iterable<array-key, OptionsSourceInterface> $taggedSources
+     */
     public function __construct(
         #[AutowireIterator('form_schema.options_source', defaultPriorityMethod: 'getPriority')]
         iterable $taggedSources,

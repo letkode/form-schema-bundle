@@ -13,6 +13,7 @@ final readonly class UniqueRule
     ) {
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -22,6 +23,7 @@ final readonly class UniqueRule
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

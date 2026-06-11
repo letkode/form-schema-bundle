@@ -15,6 +15,7 @@ final class AjaxValidateInteractionHandler extends AbstractInteractionHandler
         return 'ajax_validate';
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

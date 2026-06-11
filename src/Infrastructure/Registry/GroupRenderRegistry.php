@@ -13,6 +13,9 @@ final class GroupRenderRegistry
     /** @var array<string, GroupRenderInterface> */
     private array $renders = [];
 
+    /**
+     * @param iterable<array-key, GroupRenderInterface> $taggedRenders
+     */
     public function __construct(
         #[AutowireIterator('form_schema.group_render', defaultPriorityMethod: 'getPriority')]
         iterable $taggedRenders,

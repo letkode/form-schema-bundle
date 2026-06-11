@@ -7,7 +7,10 @@ namespace Letkode\FormSchemaBundle\Application\DTO;
 final readonly class SectionDTO implements \JsonSerializable
 {
     /**
-     * @param list<GroupDTO> $groups
+     * @param array<string, mixed>      $parameters
+     * @param array<string, mixed>      $renderMeta
+     * @param array<string, mixed>|null $translations
+     * @param list<GroupDTO>            $groups
      */
     public function __construct(
         public string $id,
@@ -24,6 +27,7 @@ final readonly class SectionDTO implements \JsonSerializable
     ) {
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function jsonSerialize(): array
     {

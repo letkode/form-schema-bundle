@@ -6,6 +6,11 @@ namespace Letkode\FormSchemaBundle\Domain\ValueObject;
 
 final readonly class FieldInteraction
 {
+    /**
+     * @param string|array<mixed>|null $target
+     * @param array<string, mixed>     $condition
+     * @param array<string, mixed>     $params
+     */
     public function __construct(
         public string $trigger,
         public string $action,
@@ -15,6 +20,7 @@ final readonly class FieldInteraction
     ) {
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -26,6 +32,7 @@ final readonly class FieldInteraction
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

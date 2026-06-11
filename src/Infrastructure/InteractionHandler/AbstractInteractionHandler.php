@@ -8,6 +8,7 @@ use Letkode\FormSchemaBundle\Domain\Contract\InteractionHandlerInterface;
 
 abstract class AbstractInteractionHandler implements InteractionHandlerInterface
 {
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

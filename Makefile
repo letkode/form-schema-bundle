@@ -85,3 +85,13 @@ cs-fixer: ## Runs php-cs-fixer following Symfony rules
 
 cs-fixer-diff: ## Runs php-cs-fixer return diff
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_PHP} php vendor/bin/php-cs-fixer fix --dry-run --diff
+
+phpstan: ## Runs PHPStan static analysis
+	docker exec ${DOCKER_PHP} mkdir -p var/phpstan
+	docker exec ${DOCKER_PHP} chown -R ${UID}:${UID} var
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_PHP} php vendor/bin/phpstan analyse --memory-limit=512M
+
+phpstan-baseline: ## Regenerates the PHPStan baseline file
+	docker exec ${DOCKER_PHP} mkdir -p var/phpstan
+	docker exec ${DOCKER_PHP} chown -R ${UID}:${UID} var
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_PHP} php vendor/bin/phpstan analyse --memory-limit=512M --generate-baseline

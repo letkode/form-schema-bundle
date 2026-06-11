@@ -15,6 +15,7 @@ final class SetDateConstraintInteractionHandler extends AbstractInteractionHandl
         return 'set_date_constraint';
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

@@ -6,6 +6,9 @@ namespace Letkode\FormSchemaBundle\Domain\ValueObject;
 
 final readonly class SectionParameters
 {
+    /**
+     * @param array<string, mixed> $dynamic
+     */
     public function __construct(
         public string|null $typeRender = null,
         private array $dynamic = [],
@@ -17,6 +20,7 @@ final readonly class SectionParameters
         return new self();
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -28,6 +32,7 @@ final readonly class SectionParameters
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

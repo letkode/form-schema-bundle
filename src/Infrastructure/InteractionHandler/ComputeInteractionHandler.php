@@ -15,6 +15,7 @@ final class ComputeInteractionHandler extends AbstractInteractionHandler
         return 'compute';
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

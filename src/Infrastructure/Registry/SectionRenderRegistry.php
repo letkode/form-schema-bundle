@@ -13,6 +13,9 @@ final class SectionRenderRegistry
     /** @var array<string, SectionRenderInterface> */
     private array $renders = [];
 
+    /**
+     * @param iterable<array-key, SectionRenderInterface> $taggedRenders
+     */
     public function __construct(
         #[AutowireIterator('form_schema.section_render', defaultPriorityMethod: 'getPriority')]
         iterable $taggedRenders,

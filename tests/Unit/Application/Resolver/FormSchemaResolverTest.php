@@ -128,8 +128,11 @@ final class FormSchemaResolverTest extends TestCase
     {
         $form = $this->buildSimpleForm();
         $section = $form->sections->first();
+        self::assertInstanceOf(FormSection::class, $section);
         $group = $section->groups->first();
+        self::assertInstanceOf(FormGroup::class, $group);
         $field = $group->fields->first();
+        self::assertInstanceOf(FormField::class, $field);
         $field->attributes = ['actions' => ['create' => ['enabled' => false]]];
 
         $this->formRepository->method('findOneByTag')->willReturn($form);
@@ -145,8 +148,11 @@ final class FormSchemaResolverTest extends TestCase
     {
         $form = $this->buildSimpleForm();
         $section = $form->sections->first();
+        self::assertInstanceOf(FormSection::class, $section);
         $group = $section->groups->first();
+        self::assertInstanceOf(FormGroup::class, $group);
         $field = $group->fields->first();
+        self::assertInstanceOf(FormField::class, $field);
         $field->attributes = ['required' => false, 'actions' => ['edit' => ['required' => true]]];
 
         $this->formRepository->method('findOneByTag')->willReturn($form);

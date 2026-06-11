@@ -41,10 +41,10 @@ class FormField
 
     public string $name {
         get {
-            $locale = $this->activeLocale ?? $this->group?->section?->form?->defaultLang ?? 'es';
+            $locale = $this->activeLocale ?? $this->group?->section?->form->defaultLang ?? 'es';
 
             return $this->getTranslation($locale, 'name')
-                ?? $this->getTranslation($this->group?->section?->form?->defaultLang ?? 'es', 'name')
+                ?? $this->getTranslation($this->group?->section?->form->defaultLang ?? 'es', 'name')
                 ?? $this->rawName;
         }
         set(string $value) => $this->rawName = trim($value);
@@ -55,10 +55,10 @@ class FormField
 
     public string|null $description {
         get {
-            $locale = $this->activeLocale ?? $this->group?->section?->form?->defaultLang ?? 'es';
+            $locale = $this->activeLocale ?? $this->group?->section?->form->defaultLang ?? 'es';
 
             return $this->getTranslation($locale, 'description')
-                ?? $this->getTranslation($this->group?->section?->form?->defaultLang ?? 'es', 'description')
+                ?? $this->getTranslation($this->group?->section?->form->defaultLang ?? 'es', 'description')
                 ?? $this->rawDescription;
         }
         set(?string $value) => $this->rawDescription = null !== $value ? trim($value) : null;
@@ -73,9 +73,11 @@ class FormField
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
     public bool $enabled = true;
 
+    /** @var array<string, mixed> */
     #[ORM\Column(type: Types::JSON)]
     public array $attributes = [];
 
+    /** @var array<int, array<string, mixed>>|null */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     public array|null $interactions = null;
 

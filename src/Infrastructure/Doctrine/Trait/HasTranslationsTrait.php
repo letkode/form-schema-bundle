@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasTranslationsTrait
 {
+    /** @var array<string, array<string, string>>|null */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     public array|null $translations = null {
         set(array|null $value) => $this->translations = $value;

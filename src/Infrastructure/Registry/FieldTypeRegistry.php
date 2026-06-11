@@ -13,6 +13,9 @@ final class FieldTypeRegistry
     /** @var array<string, FieldTypeInterface> */
     private array $types = [];
 
+    /**
+     * @param iterable<array-key, FieldTypeInterface> $taggedTypes
+     */
     public function __construct(
         #[AutowireIterator('form_schema.field_type', defaultPriorityMethod: 'getPriority')]
         iterable $taggedTypes,

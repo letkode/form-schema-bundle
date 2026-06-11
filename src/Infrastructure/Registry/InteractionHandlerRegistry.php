@@ -14,6 +14,9 @@ final class InteractionHandlerRegistry implements InteractionHandlerRegistryInte
     /** @var array<string, InteractionHandlerInterface> */
     private array $handlers = [];
 
+    /**
+     * @param iterable<array-key, InteractionHandlerInterface> $taggedHandlers
+     */
     public function __construct(
         #[AutowireIterator('form_schema.interaction_handler')]
         iterable $taggedHandlers,

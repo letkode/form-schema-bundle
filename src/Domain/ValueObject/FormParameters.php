@@ -6,6 +6,10 @@ namespace Letkode\FormSchemaBundle\Domain\ValueObject;
 
 final readonly class FormParameters
 {
+    /**
+     * @param list<string>         $availableLocales
+     * @param array<string, mixed> $dynamic
+     */
     public function __construct(
         public string|null $typeRender = null,
         public string|null $defaultLocale = null,
@@ -19,6 +23,7 @@ final readonly class FormParameters
         return new self();
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -32,6 +37,7 @@ final readonly class FormParameters
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

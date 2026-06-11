@@ -15,6 +15,7 @@ final class FilterOptionsInteractionHandler extends AbstractInteractionHandler
         return 'filter_options';
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

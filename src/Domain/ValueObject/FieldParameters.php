@@ -6,6 +6,11 @@ namespace Letkode\FormSchemaBundle\Domain\ValueObject;
 
 final readonly class FieldParameters
 {
+    /**
+     * @param array<string, mixed> $style
+     * @param array<string, mixed> $setOptions
+     * @param array<string, mixed> $dynamic
+     */
     public function __construct(
         public string|null $placeholder = null,
         public mixed $defaultValue = null,
@@ -20,6 +25,7 @@ final readonly class FieldParameters
         return new self();
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -34,6 +40,7 @@ final readonly class FieldParameters
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

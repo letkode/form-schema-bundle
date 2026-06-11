@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener(event: Events::postRemove, method: 'postRemove')]
 final class DoctrineCacheInvalidationSubscriber
 {
+    /** @var array<class-string> */
     private static array $watchedEntities = [
         Form::class,
         FormSection::class,

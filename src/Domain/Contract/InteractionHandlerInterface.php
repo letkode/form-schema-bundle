@@ -8,5 +8,6 @@ interface InteractionHandlerInterface
 {
     public static function getName(): string;
 
+    /** @return array<string, mixed> */
     public function getDefaultParams(): array;
 }

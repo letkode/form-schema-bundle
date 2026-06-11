@@ -69,6 +69,7 @@ class LetkodeFormSchemaBundle extends AbstractBundle
         ;
     }
 
+    /** @param array<string, mixed> $config */
     #[\Override]
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {

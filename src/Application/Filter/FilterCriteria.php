@@ -6,6 +6,12 @@ namespace Letkode\FormSchemaBundle\Application\Filter;
 
 final readonly class FilterCriteria
 {
+    /**
+     * @param array<string> $includeSections
+     * @param array<string> $excludeSections
+     * @param array<string> $includeGroups
+     * @param array<string> $excludeGroups
+     */
     public function __construct(
         public array $includeSections = [],
         public array $excludeSections = [],

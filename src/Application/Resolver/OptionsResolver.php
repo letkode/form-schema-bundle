@@ -14,7 +14,11 @@ final class OptionsResolver
     ) {
     }
 
-    /** @return list<OptionDTO> */
+    /**
+     * @param array<string, mixed> $setOptions
+     *
+     * @return list<OptionDTO>
+     */
     public function resolve(array $setOptions, string|null $locale = null): array
     {
         if (empty($setOptions) || !isset($setOptions['type'])) {

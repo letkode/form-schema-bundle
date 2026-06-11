@@ -13,6 +13,9 @@ final class FormRenderRegistry
     /** @var array<string, FormRenderInterface> */
     private array $renders = [];
 
+    /**
+     * @param iterable<array-key, FormRenderInterface> $taggedRenders
+     */
     public function __construct(
         #[AutowireIterator('form_schema.form_render', defaultPriorityMethod: 'getPriority')]
         iterable $taggedRenders,
