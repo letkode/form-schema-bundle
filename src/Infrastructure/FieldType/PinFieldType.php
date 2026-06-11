@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Letkode\FormSchemaBundle\Infrastructure\FieldType;
 
 use Letkode\FormSchemaBundle\Attribute\AsFieldType;
+use Letkode\FormSchemaBundle\Domain\ValueObject\ValidationRules;
 
 #[AsFieldType]
 final class PinFieldType extends AbstractFieldType
@@ -15,6 +16,14 @@ final class PinFieldType extends AbstractFieldType
         return 'pin';
     }
 
+    #[\Override]
+    public function getDefaultValidationRules(): ValidationRules
+    {
+        // minLength = maxLength = default pin length (4). Override via attributes.validation if length differs.
+        return new ValidationRules(minLength: 4, maxLength: 4);
+    }
+
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

@@ -16,6 +16,7 @@ Modela formularios en una jerarquía **Form → Section → Group → Field**, c
 | [Configuración](docs/configuration.md) | Todas las opciones del bundle con valores por defecto |
 | [Resolver](docs/resolver.md) | API del `FormSchemaResolver`, fluent builder, DTOs de salida |
 | [Tipos de campo](docs/field-types.md) | Los 22 tipos built-in, atributos, parámetros UI y `option.data` |
+| [Validación](docs/validation-rules-frontend.md) | Reglas `attributes.validation` por tipo — referencia para frontend |
 | [Fuentes de opciones](docs/options-sources.md) | `general` (catálogo BD), `entity` (repositorios del proyecto) |
 | [Renders](docs/renders.md) | Renders de Form, Section y Group disponibles y su configuración |
 | [Caché](docs/cache.md) | Activar caché PSR-6, invalidación automática y manual |

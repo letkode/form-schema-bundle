@@ -6,6 +6,7 @@ namespace Letkode\FormSchemaBundle\Infrastructure\FieldType;
 
 use Letkode\FormSchemaBundle\Domain\Contract\FieldTypeInterface;
 use Letkode\FormSchemaBundle\Domain\ValueObject\FieldAttributes;
+use Letkode\FormSchemaBundle\Domain\ValueObject\ValidationRules;
 
 abstract class AbstractFieldType implements FieldTypeInterface
 {
@@ -18,7 +19,13 @@ abstract class AbstractFieldType implements FieldTypeInterface
     #[\Override]
     public function getDefaultAttributes(): FieldAttributes
     {
-        return FieldAttributes::default();
+        return new FieldAttributes(validation: $this->getDefaultValidationRules());
+    }
+
+    #[\Override]
+    public function getDefaultValidationRules(): ValidationRules
+    {
+        return ValidationRules::empty();
     }
 
     #[\Override]
@@ -27,6 +34,7 @@ abstract class AbstractFieldType implements FieldTypeInterface
         return $rawValue;
     }
 
+    /** @return array<string, mixed> */
     #[\Override]
     public function getDefaultParams(): array
     {

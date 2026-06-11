@@ -6,12 +6,17 @@ namespace Letkode\FormSchemaBundle\Domain\ValueObject;
 
 final readonly class FieldAttributes
 {
+    /**
+     * @param array<string, mixed> $actions
+     * @param array<string, mixed> $dynamic
+     */
     public function __construct(
         public bool $required = false,
         public bool $readonly = false,
         public UniqueRule $unique = new UniqueRule(),
         public FilterRule $filter = new FilterRule(),
         public array $actions = [],
+        public ValidationRules $validation = new ValidationRules(),
         private array $dynamic = [],
     ) {
     }
@@ -21,9 +26,10 @@ final readonly class FieldAttributes
         return new self();
     }
 
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        $knownKeys = ['required', 'readonly', 'unique', 'filter', 'actions'];
+        $knownKeys = ['required', 'readonly', 'unique', 'filter', 'actions', 'validation'];
 
         return new self(
             required: $data['required'] ?? false,
@@ -31,10 +37,12 @@ final readonly class FieldAttributes
             unique: UniqueRule::fromArray($data['unique'] ?? []),
             filter: FilterRule::fromArray($data['filter'] ?? []),
             actions: $data['actions'] ?? [],
+            validation: ValidationRules::fromArray($data['validation'] ?? []),
             dynamic: array_diff_key($data, array_flip($knownKeys)),
         );
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [
@@ -43,6 +51,7 @@ final readonly class FieldAttributes
             'unique' => $this->unique->toArray(),
             'filter' => $this->filter->toArray(),
             'actions' => $this->actions,
+            'validation' => $this->validation->toArray(),
             ...$this->dynamic,
         ];
     }
@@ -62,6 +71,7 @@ final readonly class FieldAttributes
             unique: $this->unique,
             filter: $this->filter,
             actions: $this->actions,
+            validation: $this->validation,
             dynamic: array_merge($this->dynamic, array_diff_key($overrides, array_flip(['required', 'readonly']))),
         );
     }

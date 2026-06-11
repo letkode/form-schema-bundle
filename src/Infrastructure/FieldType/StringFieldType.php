@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Letkode\FormSchemaBundle\Infrastructure\FieldType;
 
 use Letkode\FormSchemaBundle\Attribute\AsFieldType;
+use Letkode\FormSchemaBundle\Domain\ValueObject\ValidationRules;
 
 #[AsFieldType]
 final class StringFieldType extends AbstractFieldType
@@ -13,5 +14,11 @@ final class StringFieldType extends AbstractFieldType
     public static function getName(): string
     {
         return 'string';
+    }
+
+    #[\Override]
+    public function getDefaultValidationRules(): ValidationRules
+    {
+        return new ValidationRules(maxLength: 255);
     }
 }

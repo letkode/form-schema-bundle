@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.1.0] - 2026-06-11
+
+### Added
+
+- **`ValidationRules` value object** (`Domain/ValueObject/ValidationRules.php`) — expone reglas de validación estructuradas por campo en el schema exportado
+- **`FieldTypeInterface::getDefaultValidationRules()`** — cada tipo de campo declara sus reglas por defecto; `AbstractFieldType` retorna vacío como base
+- **Reglas por tipo built-in:**
+  - `string` → `max_length: 255`
+  - `email` → `max_length: 254` (límite RFC 5321)
+  - `phone` → `max_length: 30`
+  - `textarea` → `max_length: 5000`
+  - `password` → `min_length: 8`
+  - `pin` → `min_length: 4, max_length: 4` (alineado con `params.length`)
+- **`FieldAttributes::$validation`** — integra `ValidationRules` como campo del VO; se expone en `toArray()` bajo la clave `validation` y se puede sobreescribir desde el seed vía `attributes.validation`
+- Documento [`docs/validation-rules-frontend.md`](docs/validation-rules-frontend.md) — referencia completa de todas las reglas disponibles con estado de implementación para el equipo de frontend
+
+### Changed
+
+- `AbstractFieldType::getDefaultAttributes()` ahora construye `FieldAttributes` con las reglas del tipo (`getDefaultValidationRules()`) en lugar de retornar `FieldAttributes::default()`
+- `docs/field-types.md` — nueva sección **Reglas de validación** con tabla de claves, defaults por tipo y ejemplos YAML
+
+---
+
 ## [1.0.4] - 2026-06-09
 
 ### Changed

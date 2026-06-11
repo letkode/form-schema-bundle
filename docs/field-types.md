@@ -242,6 +242,95 @@ Los atributos se almacenan como JSON en BD y se resuelven como `FieldAttributes`
 | `create` | `bool` | `true` | Visible en contexto `create` |
 | `unique` | `object` | `{enabled: false}` | Regla de unicidad |
 | `filter` | `object` | `{enabled: false}` | Regla de filtrado en listados |
+| `validation` | `object` | ver tabla abajo | Reglas de validación estructuradas |
+
+### Reglas de validación (`attributes.validation`)
+
+El sub-objeto `validation` expone las reglas que el frontend (y el backend en Fase 2) deben aplicar. Solo aparecen las claves con valor distinto de `null`.
+
+| Clave | Tipo | Aplica a | Descripción |
+|---|---|---|---|
+| `min_length` | `int` | string, email, phone, textarea, password, pin | Longitud mínima del string |
+| `max_length` | `int` | string, email, phone, textarea, password, pin | Longitud máxima del string |
+| `min` | `int\|float` | number, range, rating | Valor numérico mínimo |
+| `max` | `int\|float` | number, range, rating | Valor numérico máximo |
+| `min_items` | `int` | select-multiple, checkbox, duallist, tree | Mínimo de ítems seleccionados |
+| `max_items` | `int` | select-multiple, checkbox, duallist, tree | Máximo de ítems seleccionados |
+| `pattern` | `string` | string, phone | Expresión regular que debe cumplir el valor |
+| `allowed_mimes` | `string[]` | file | Lista de MIME types aceptados (ej. `["image/jpeg","application/pdf"]`) |
+| `max_file_size` | `int` | file | Tamaño máximo en bytes |
+| `min_date` | `string` | date, datetime, date-range | Fecha mínima en ISO 8601 (`YYYY-MM-DD`) |
+| `max_date` | `string` | date, datetime, date-range | Fecha máxima en ISO 8601 (`YYYY-MM-DD`) |
+
+#### Defaults por tipo de campo
+
+Cada tipo declara sus reglas por defecto vía `getDefaultValidationRules()`. Los valores almacenados en `attributes.validation` en BD sobreescriben los defaults del tipo.
+
+| Tipo | Defaults |
+|---|---|
+| `string` | `max_length: 255` |
+| `email` | `max_length: 254` |
+| `phone` | `max_length: 30` |
+| `textarea` | `max_length: 5000` |
+| `password` | `min_length: 8` |
+| `pin` | `min_length: 4, max_length: 4` (alineado con `params.length: 4`) |
+| resto | `{}` (sin reglas estáticas) |
+
+> Si el campo `pin` usa `length` distinto de 4, actualiza también `attributes.validation.min_length` y `attributes.validation.max_length` en el seed para mantener consistencia.
+
+#### Ejemplo en JSON
+
+```json
+{
+  "tag": "email",
+  "type": "email",
+  "attributes": {
+    "required": true,
+    "readonly": false,
+    "validation": {
+      "max_length": 254
+    }
+  }
+}
+```
+
+```json
+{
+  "tag": "bio",
+  "type": "textarea",
+  "attributes": {
+    "required": false,
+    "validation": {
+      "max_length": 500
+    }
+  }
+}
+```
+
+#### Sobreescribir en seed
+
+```yaml
+fields:
+  - tag: bio
+    type: textarea
+    attributes:
+      required: false
+      validation:
+        max_length: 500
+```
+
+```yaml
+fields:
+  - tag: documento
+    type: file
+    attributes:
+      required: true
+      validation:
+        allowed_mimes: ["application/pdf", "image/jpeg"]
+        max_file_size: 5242880   # 5 MB en bytes
+```
+
+> Ver referencia completa para el frontend: [`docs/validation-rules-frontend.md`](validation-rules-frontend.md).
 
 ### Atributos dinámicos (custom context keys)
 
